@@ -1,5 +1,5 @@
 # DSSM
-DSSM is abbreviation for deep sequence-structure motifs, it trains deep learning models to infer binding sequence and structure motifs from sequences simultaneously.
+DSSM is abbreviation for Deep Sequence-Structure Motifs, it trains deep learning models to infer binding sequence and structure motifs from sequences simultaneously.
 
 Dependency <br>
 <a href=https://github.com/fchollet/keras/>keras 1.1.2 library</a> <br>
