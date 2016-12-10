@@ -618,19 +618,16 @@ def set_cnn_model(input_dim, input_length):
 
     return model
 
-def get_cnn_network(graphprot = False):
+def get_cnn_network():
     '''
      get_feature = theano.function([origin_model.layers[0].input],origin_model.layers[11].get_output(train=False),allow_input_downcast=False)
     feature = get_feature(data)
     '''
     nbfilter = 12
     print 'configure cnn network'
-    if graphprot:
-        seq_model = set_cnn_model(4, 307)
-        struct_model = set_cnn_model(6, 311)
-    else:
-        seq_model = set_cnn_model(4, 107)
-        struct_model = set_cnn_model(6, 111)
+
+    seq_model = set_cnn_model(4, 107)
+    struct_model = set_cnn_model(6, 111)
     #pdb.set_trace()
     model = Sequential()
     model.add(Merge([seq_model, struct_model], mode='concat', concat_axis=1))
@@ -1078,7 +1075,7 @@ def run_seq_struct_cnn_network(protein, seq = True, fw = None, oli = False, min_
         cnn_train.append(struct_train)
         cnn_validation.append(seq_validation)
         cnn_validation.append(struct_validation)        
-        seq_net =  get_cnn_network(graphprot = graph_prot)
+        seq_net =  get_cnn_network()
         seq_data = []
             
     y, encoder = preprocess_labels(training_label)
