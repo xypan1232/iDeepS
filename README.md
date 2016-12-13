@@ -12,6 +12,6 @@ Content <br>
 ./seq_cnn: detected binding sequence motifs from DSSM. <br>
 ./structure_cnn: detected binding structure motifs from DSSM. <br>
 ./dssm.py: the python code, it can be ran to reproduce our results. <br>
-
+./dssm_motif: the predicted sequence and structure motifs from DSSM.
 
 Contact: Xiaoyong Pan (xypan172436atgmail.com)
