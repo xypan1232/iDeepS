@@ -1,0 +1,13 @@
+               consensus  annotation     ic    mean     std
+0                GACACGG        FMR1   2.54  0.0400  0.0913
+1                GGGUGGG           .   1.54  0.1762  0.2186
+2                GACUGGC           .   2.13  0.1618  0.2022
+3                UUUUUUU         HuR   8.53  0.0137  0.0930
+4                GCAUGGC           .   4.34  0.0197  0.0961
+5                GAAGGAG           .   1.83  0.1419  0.1947
+6                UUGUAUG         HuR   3.88  0.0185  0.0882
+7                AGCGCGG     HNRNPH2   2.10  0.1467  0.1913
+8                AAUUUUU         HuR   5.65  0.0191  0.1025
+9                GAGAGGA      SRSF10   1.56  0.1527  0.2063
+10               AAUGGAU           .   5.46  0.0039  0.0414
+11               CCGGCCC           .   2.89  0.0516  0.1198
