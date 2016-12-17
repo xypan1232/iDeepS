@@ -1,5 +1,5 @@
-# DSSM
-DSSM is abbreviation for Deep Sequence-Structure Motifs, it trains deep learning models to infer binding sequence and structure motifs from sequences simultaneously.
+# iDeepS
+iDeepS aims to discover Sequence-Structure Motifs, it trains deep learning models to infer binding sequence and structure motifs from sequences simultaneously.
 We first encode the sequence and secondary structure into one-hot encoding, which are further fed into CNNs to learn abstract motif features. 
 then we use bidirectional LSTM to capture the long range dependencies between binding sequence and structure motifs identified by CNNs.
 Finally the learned abstract features are fed into classification layer to predict RBP binding sites on RNAs.
