@@ -14,9 +14,8 @@ Dependency <br>
 
 Content <br>
 ./datasets: the training and testing dataset with sequence and label indicating it is binding sites or not<br>
-./seq_cnn: detected binding sequence motifs from DSSM. <br>
-./structure_cnn: detected binding structure motifs from DSSM. <br>
-./dssm.py: the python code, it can be ran to reproduce our results. <br>
-./dssm_motif: the predicted sequence and structure motifs from DSSM.
+./motif/seq_cnn: detected binding sequence motifs from iDeepS. <br>
+./motif/structure_cnn: detected binding structure motifs from iDeepS. <br>
+./ideeps.py: the python code, it can be ran to reproduce our results. <br>
 
 Contact: Xiaoyong Pan (xypan172436atgmail.com)
