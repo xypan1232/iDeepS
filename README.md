@@ -3,7 +3,7 @@ iDeepS aims to discover Sequence-Structure Motifs, it trains deep learning model
 We first encode the sequence and secondary structure into one-hot encoding, which are further fed into CNNs to learn abstract motif features. 
 then we use bidirectional LSTM to capture the long range dependencies between binding sequence and structure motifs identified by CNNs.
 Finally the learned abstract features are fed into classification layer to predict RBP binding sites on RNAs.
-We comprehensively evaluate DSSM on verified RBP binding sites derived from large-scale representative CLIP-seq datasets.
+We comprehensively evaluate iDeepS on verified RBP binding sites derived from large-scale representative CLIP-seq datasets.
 
 <br>
 Dependency <br>
