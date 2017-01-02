@@ -1,0 +1,8 @@
+# [parameter] [default] [parameter list, last item used with sgd-internal optimization]
+EPOCHS 10 10 25 50
+LAMBDA 10e-6 10e-4 10e-6 10e-8
+R 1 0 1 2 3 4
+D 4 0 1 2 3 4 5 6
+b 14 14 16 18
+DIRECTED DIRECTED DIRECTED
+VIEWPOINT --vp --vp

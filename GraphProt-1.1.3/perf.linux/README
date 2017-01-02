@@ -1,0 +1,36 @@
+README
+
+Perf Release 5.11: July 3, 2004
+
+A minor bug was fixed in the way ties are dealt with in the APR code.
+In some instances, the number of cases in a tie was miscalculated by
+1, leading to incorrect results.  This only effected result where more
+than 2 cases were given the same prediction.
+
+Thanks.
+
+
+Perf Release 5.10: July 8, 2004
+
+A bug was found in how perf calculates Aaverage precision (APR) when
+there is only one true positive in the data set (or block) given to
+perf.  Perf 5.00, the version originally released for the KDD-CUP,
+always returned APR = 0.0 when there was only one true positive.
+
+This has been fixed in this new release.  This gave us an opportunity
+to revise how perf calculates APR.  The new method not only fixes the
+bug with the previous code for APR, but is a new way of defining
+average precision that we think represents an improvement to the
+metric.  This improvement should make optimizing to the metric easier,
+and the results more meaningful.
+
+APR is only used for the BIO problem, so this only affects the protein
+matching problem.  The change in APR when there are many true
+positives should be small.
+
+We also took the opportunity to make a few minor improvements to error
+reporting in perf.  Perf now has additional warning messages when the
+data set contains only all positive or only all negative instances.
+
+Thanks.
+

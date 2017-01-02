@@ -1,0 +1,13 @@
+Warning: Prediction out of range [0-1] for RMS, CXE, NRM, SLQ, or CAL metrics.
+Warning: Prediction (-11.874953) less than 0.0 when calculating RMS or CXE
+Warning: Prediction (  1.001651) larger than 1.0 when calculating RMS or CXE
+Warning: Prediction ( -7.098900) less than 0.0 when calculating RMS or CXE
+Warning: Prediction (  1.000781) larger than 1.0 when calculating RMS or CXE
+Warning: Prediction (-38.719147) less than 0.0 when calculating RMS or CXE
+Warning: Prediction (  1.000230) larger than 1.0 when calculating RMS or CXE
+Warning: Prediction (-34.542461) less than 0.0 when calculating RMS or CXE
+Warning: Prediction (  1.009467) larger than 1.0 when calculating RMS or CXE
+MEAN_BLOCK_APR     0.58583
+MEAN_BLOCK_RKL    28.75000
+MEAN_BLOCK_RMS     4.20902
+MEAN_BLOCK_TOP1    0.50000

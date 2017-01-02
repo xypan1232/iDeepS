@@ -1,0 +1,35 @@
+This directory contains six test files, and the results of running
+perf on these test files.  We provide these files for two reasons.
+
+First, it provides smaple files in the format perf expects to see as
+input.  This is only important if you will use perf during your
+development.  Note that the format of the files you must submit
+includes an extra column -- the unique case ID for each case (each
+line).
+
+The second use of the files is to verify that perf on your machine
+generates similar output.  Below are the commands used to run perf to
+create the results files.
+
+Some of the file names have the word "bad" at the beginning.  These
+are files that contain predictions that do not conform to what perf
+wants to see for some of the metrics.  For example, "-cxe"
+(cross-entropy) and "-slq 0.01" (slac q-score) both expect predictions
+to be on the interval [0-1] and have trouble with numbers outside this
+range.  We include these files and the output perf generates for them
+because a common mistake is to not convert the predictions from your
+model to this range for these metrics.  For example, SVM predictions
+often are [-inf,+inf] and this will not work with metrics such as
+cross entropy and slq.
+
+CAREFUL: To prevent overwriting the results files by runing these
+commands with the output redirected, we've placed a 'z' at the end
+of the output file names.
+
+../perf.linux/perf < testperfdata >& testperfdata.resultsz
+../perf.linux/perf < phy_perf_sample_test.dat >& phy_perf_sample_test.resultsz
+../perf.linux/perf -blocks -apr -rkl -rms -top1 < bio_perf_sample_test.dat > bio_perf_sample_test.resultsz
+
+../perf.linux/perf < badtestperfdata >& badtestperfdata.resultsz
+../perf.linux/perf < bad_phy_perf_sample_test.dat >& bad_phy_perf_sample_test.resultsz
+../perf.linux/perf -blocks -apr -rkl -rms -top1 < bad_bio_perf_sample_test.dat >& bad_bio_perf_sample_test.resultsz

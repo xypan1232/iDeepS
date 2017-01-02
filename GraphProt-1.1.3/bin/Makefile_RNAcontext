@@ -1,0 +1,149 @@
+# secondary structure profiles can be computed using
+# PLFOLD or SFOLD or NONE
+# to be called from main directory as
+# make -f bin/Makefile_RNAcontext
+PROFILE_COMP:=PLFOLD
+
+SHELL:=/bin/bash
+.DELETE_ON_ERROR:
+
+# don't delete intermediate files
+.SECONDARY:
+
+# paths
+ROOT:=~/projects/RBPaffinity
+FA_DIR:=$(ROOT)/data/fasta/old_naming_scheme/
+THR_DIR:=$(ROOT)/data/thresholds/
+
+# progs
+RNAPLFOLD=bin/RNAplfold_context_stdout
+PLFOLD_WL=-W 150 -L 100
+PL2CONTEXT=./bin/pl2context.pl
+RNACONTEXT=~/src/RNAcontext/bin/rnacontext
+PERF:=~/src/stat/perf
+FASTAPL:=/usr/local/user/RNAtools/fastapl
+# this includes the modifications from RNAcontext for computing structure accs
+SFOLD_DIR:=/home/maticzkd/src/sfold-2.2
+CAT_TABLES:=$(PERL) /home/maticzkd/co/RNAtools/catTables.pl
+RBIN:=/usr/local/R/2.15.1-lx/bin/R
+PLOTRESULTS=bin/RNAcontext_Auswertung.R
+
+# proteins to use
+# PROTEINS:=Fusip HuR PTB RBM4 SF2 SLM2 U1A VTS1 YB1
+PROTEINS:=test
+
+# targets
+FULL_BASENAMES:=$(patsubst %,%_data_full_A,$(PROTEINS)) \
+			$(patsubst %,%_data_full_B,$(PROTEINS))
+BRUIJN_BASENAMES:=$(patsubst %,%_data_bruijn_A,$(PROTEINS)) \
+			$(patsubst %,%_data_bruijn_B,$(PROTEINS))
+BASENAMES:=$(FULL_BASENAMES) $(BRUIJN_BASENAMES)
+
+PROFILES:=$(patsubst %, %.profile, $(BASENAMES)) $(patsubst %, %.pred.profile, $(BASENAMES))
+SEQUENCES:=$(patsubst %, %.sequence, $(BASENAMES))
+RESULTDIRS:=$(patsubst %, %.dummy, $(BASENAMES))
+
+RNACONTEXT_OUTPUTS:=$(wildcard outputs/train*.txt) $(wildcard outputs/test*.txt)
+PERF_FILES:=$(RNACONTEXT_OUTPUTS:.txt=.perf)
+CORRELATION_FILES:=$(RNACONTEXT_OUTPUTS:.txt=.correlation)
+
+.PHONY: all
+all: $(RESULTDIRS)
+
+.PHONY: test
+test: test_data_full_A.dummy results_aucpr.csv results_correlation.csv best.csv.dummy
+
+# helper receipe for test
+test_data_full_A.fa :
+	cp -f $(FA_DIR)/$@ $@
+
+# helper receipe for test
+test_data_full_A.pred.fa :
+	cp -f $(FA_DIR)/$@ $@
+
+# helper receipe for test
+test_data_full_B.fa :
+	cp -f $(FA_DIR)/$@ $@
+
+# helper receipe for test
+test_data_full_B.pred.fa :
+	cp -f $(FA_DIR)/$@ $@
+
+.PHONY: profile
+profile: $(PROFILES)
+
+.PHONY: perf
+perf: results_aucpr.csv results_correlation.csv best.csv.dummy
+
+%.sequence : %.fa
+	cat $< | /usr/local/perl/bin/perl $(FASTAPL) -e 'my @vals = split(/\s/, $$head); my $$affy=pop @vals; $$seq =~ tr/AaCcGgUuTt/AACCGGUUUU/; print $$affy, "\t", $$seq, "\n";' > $@
+	cut -f 2 $@ | grep -qv -E '^[ACGU]+$$'; \
+	if [ $$? -eq 0 ]; \
+	then \
+		echo "warning: sequences in file $@ contain illegal characters (not in ACGU); RNAcontext will segfault..."; \
+		return 1; \
+	fi
+
+ifeq ($(PROFILE_COMP),SFOLD)
+
+%.profile : %.fa
+	-rm -rfv $@ $@.tmp /var/tmp/$@.tmp_data /var/tmp/$@.tmp_out
+	mkdir $@.tmp /var/tmp/$@.tmp_data /var/tmp/$@.tmp_out
+	cd $@.tmp; ln -s $(SFOLD_DIR)/* ./;	ln -s /var/tmp/$@.tmp_data data; ln -s /var/tmp/$@.tmp_out out; ./sfold_helper ../$< ../$@
+	-rm -rfv $@.tmp /var/tmp/$@.tmp
+
+%.dummy : %.sequence %.profile %.pred.sequence %.pred.profile
+	mkdir -p outputs
+	$(RNACONTEXT) -s 3 -w 4-12 -a ACGT -e PLMU -c $*.sequence -h $*.profile -d $*.pred.sequence -n $*.pred.profile -o $* && touch $@
+
+else
+ifeq ($(PROFILE_COMP),PLFOLD)
+
+%.profile : %.fa
+	cat $< | $(RNAPLFOLD) $(PLFOLD_WL) -u 1 | perl $(PL2CONTEXT) > $@
+
+%.dummy : %.sequence %.profile %.pred.sequence %.pred.profile
+	mkdir -p outputs
+	$(RNACONTEXT) -s 3 -w 4-12 -a ACGU -e PHIME -c $*.sequence -h $*.profile -d $*.pred.sequence -n $*.pred.profile -o $* && touch $@
+
+else
+ifeq ($(PROFILE_COMP),NONE)
+
+#assign 1 to each profile position
+%.profile : %.fa
+	cat $< | \
+	$(FASTAPL) -e \
+	'print $$head,"\n"; print join("\t", split("", "1" x length($$seq))), "\n";' > $@
+
+# profile annotation D is for dummy
+%.dummy : %.sequence %.profile %.pred.sequence %.pred.profile
+	mkdir -p outputs
+	$(RNACONTEXT) -s 3 -w 4-12 -a ACGU -e D -c $*.sequence -h $*.profile -d $*.pred.sequence -n $*.pred.profile -o $* && touch $@
+
+endif
+endif
+endif
+
+%.perf : BASENAME=$(word 2,$(subst _, ,$<))
+%.perf : $(shell echo $(BASENAME))
+%.perf : HT=$(shell grep $(BASENAME) $(THR_DIR)/positive.txt | cut -f 2 -d' ')
+%.perf : LT=$(shell grep $(BASENAME) $(THR_DIR)/negative.txt | cut -f 2 -d' ')
+%.perf : %.txt
+	# select by threshold
+	( cat $< | awk '$$1 > $(HT)' | cut -f 2 | awk '{print 1 "\t" $$1 }'; \
+	cat $< | awk '$$1 < $(LT)' | cut -f 2 | awk '{print 0 "\t" $$1}' ) > $@.threshold
+	# compute performance measures
+	$(PERF) < $@.threshold > $@
+	rm -rf $@.threshold*
+
+%.correlation : %.txt
+	cat $< | $(RBIN) --slave -e 'data=read.table("$<", col.names=c("measurement","prediction")); t <- cor.test(data$$measurement, data$$prediction, method="spearman", alternative="greater"); write.table(cbind(t$$estimate, t$$p.value), file="$@", col.names=F, row.names=F, quote=F, sep="\t")'
+
+results_aucpr.csv : $(PERF_FILES)
+	grep APR $^ | tr '/_' '  ' | sed 's/bruijn/weak/g' | sed 's/.perf:APR//g' | tr "\t" ' ' | awk '{print $$2,$$3,$$5,$$6,$$7,$$NF}' > $@
+
+results_correlation.csv : $(CORRELATION_FILES)
+	$(CAT_TABLES) $(CORRELATION_FILES) | tr '/_' '  ' | sed 's/bruijn/weak/g' | sed 's/.correlation//g' | tr "\t" ' ' | awk '{print $$2,$$3,$$5,$$6,$$7,$$8,$$9}' > $@
+
+best.csv.dummy : results_aucpr.csv
+	R --slave < $(PLOTRESULTS) && touch $@

@@ -1,0 +1,48 @@
+Warning: Prediction out of range [0-1] for RMS, CXE, NRM, SLQ, or CAL metrics.
+Can't calculate SLQ with predictions out of range [0-1].
+Cross-entropy doesn't make sense with predictions out of range [0-1].
+Warning: Prediction ( -0.001596) less than 0.0 when calculating RMS or CXE
+Warning: Prediction (  1.697399) larger than 1.0 when calculating RMS or CXE
+ACC    0.83085   pred_thresh  0.500000
+PPV    0.34884   pred_thresh  0.500000
+NPV    0.96203   pred_thresh  0.500000
+SEN    0.71429   pred_thresh  0.500000
+SPC    0.84444   pred_thresh  0.500000
+PRE    0.34884   pred_thresh  0.500000
+REC    0.71429   pred_thresh  0.500000
+PRF    0.46875   pred_thresh  0.500000
+LFT    3.33887   pred_thresh  0.500000
+SAR    0.77644   pred_thresh  0.500000 wacc  1.000000 wroc  1.000000 wrms  1.000000 
+
+ACC    0.90050   freq_thresh  0.620109
+PPV    0.52381   freq_thresh  0.620109
+NPV    0.94444   freq_thresh  0.620109
+SEN    0.52381   freq_thresh  0.620109
+SPC    0.94444   freq_thresh  0.620109
+PRE    0.52381   freq_thresh  0.620109
+REC    0.52381   freq_thresh  0.620109
+PRF    0.52381   freq_thresh  0.620109
+LFT    5.01361   freq_thresh  0.620109
+SAR    0.79965   freq_thresh  0.620109 wacc  1.000000 wroc  1.000000 wrms  1.000000 
+
+ACC    0.91294   max_acc_thresh  0.712250
+PPV    0.64000   max_acc_thresh  0.712250
+NPV    0.93103   max_acc_thresh  0.712250
+SEN    0.38095   max_acc_thresh  0.712250
+SPC    0.97500   max_acc_thresh  0.712250
+PRE    0.64000   max_acc_thresh  0.712250
+REC    0.38095   max_acc_thresh  0.712250
+PRF    0.47761   max_acc_thresh  0.712250
+LFT    6.12571   max_acc_thresh  0.712250
+SAR    0.80380   max_acc_thresh  0.712250 wacc  1.000000 wroc  1.000000 wrms  1.000000 
+
+PRB    0.52381
+APR    0.47902
+ROC    0.86326
+R50    0.48218
+RKL    401
+TOP1   0.00000
+TOP10  1.00000
+RMS    0.36480
+CA1    0.24907 19_0.05_bins
+CA2    0.23230 Bin_Size 100

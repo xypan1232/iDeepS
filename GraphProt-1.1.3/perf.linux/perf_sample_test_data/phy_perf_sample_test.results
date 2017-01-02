@@ -1,0 +1,48 @@
+ACC    0.70100   pred_thresh  0.500000
+PPV    0.73262   pred_thresh  0.500000
+NPV    0.67969   pred_thresh  0.500000
+SEN    0.60658   pred_thresh  0.500000
+SPC    0.79040   pred_thresh  0.500000
+PRE    0.73262   pred_thresh  0.500000
+REC    0.60658   pred_thresh  0.500000
+PRF    0.66367   pred_thresh  0.500000
+LFT    1.50641   pred_thresh  0.500000
+SAR    0.68147   pred_thresh  0.500000 wacc  1.000000 wroc  1.000000 wrms  1.000000 
+
+ACC    0.70600   freq_thresh  0.475248
+PPV    0.69774   freq_thresh  0.475248
+NPV    0.71382   freq_thresh  0.475248
+SEN    0.69774   freq_thresh  0.475248
+SPC    0.71382   freq_thresh  0.475248
+PRE    0.69774   freq_thresh  0.475248
+REC    0.69774   freq_thresh  0.475248
+PRF    0.69774   freq_thresh  0.475248
+LFT    1.43469   freq_thresh  0.475248
+SAR    0.68313   freq_thresh  0.475248 wacc  1.000000 wroc  1.000000 wrms  1.000000 
+
+Caution: 3 Different Thresholds Achieved Max Accuracy.
+Run with -accplot option to see accuracy vs. threshold.
+
+ACC    0.70767   max_acc_thresh  0.480402
+PPV    0.70350   max_acc_thresh  0.480402
+NPV    0.71146   max_acc_thresh  0.480402
+SEN    0.68951   max_acc_thresh  0.480402
+SPC    0.72485   max_acc_thresh  0.480402
+PRE    0.70350   max_acc_thresh  0.480402
+REC    0.68951   max_acc_thresh  0.480402
+PRF    0.69643   max_acc_thresh  0.480402
+LFT    1.44653   max_acc_thresh  0.480402
+SAR    0.68369   max_acc_thresh  0.480402 wacc  1.000000 wroc  1.000000 wrms  1.000000 
+
+PRB    0.69774
+APR    0.78083
+ROC    0.79038
+R50    0.16536
+RKL    2958
+TOP1   1.00000
+TOP10  1.00000
+SLQ    0.27064 Bin_Width  0.010000
+CXE    0.84693
+RMS    0.44698
+CA1    0.12323 19_0.05_bins
+CA2    0.10077 Bin_Size 100

@@ -1,0 +1,10 @@
+Fusip 2
+VTS1 3.5
+SLM2 2.5
+SF2 3
+PTB 2
+HuR 4
+RBM4 3
+U1A 0.5
+YB1 1.3
+test 1

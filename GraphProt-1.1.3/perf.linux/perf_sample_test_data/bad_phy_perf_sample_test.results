@@ -1,0 +1,51 @@
+Warning: Prediction out of range [0-1] for RMS, CXE, NRM, SLQ, or CAL metrics.
+Can't calculate SLQ with predictions out of range [0-1].
+Cross-entropy doesn't make sense with predictions out of range [0-1].
+Warning: Prediction ( -3.882198) less than 0.0 when calculating RMS or CXE
+Warning: Prediction (  1.000846) larger than 1.0 when calculating RMS or CXE
+ACC    0.69800   pred_thresh  0.500000
+PPV    0.78243   pred_thresh  0.500000
+NPV    0.65710   pred_thresh  0.500000
+SEN    0.52502   pred_thresh  0.500000
+SPC    0.86178   pred_thresh  0.500000
+PRE    0.78243   pred_thresh  0.500000
+REC    0.52502   pred_thresh  0.500000
+PRF    0.62838   pred_thresh  0.500000
+LFT    1.60884   pred_thresh  0.500000
+SAR    0.46395   pred_thresh  0.500000 wacc  1.000000 wroc  1.000000 wrms  1.000000 
+
+ACC    0.70600   freq_thresh -0.003358
+PPV    0.69774   freq_thresh -0.003358
+NPV    0.71382   freq_thresh -0.003358
+SEN    0.69774   freq_thresh -0.003358
+SPC    0.71382   freq_thresh -0.003358
+PRE    0.69774   freq_thresh -0.003358
+REC    0.69774   freq_thresh -0.003358
+PRF    0.69774   freq_thresh -0.003358
+LFT    1.43469   freq_thresh -0.003358
+SAR    0.46662   freq_thresh -0.003358 wacc  1.000000 wroc  1.000000 wrms  1.000000 
+
+Caution: 3 Different Thresholds Achieved Max Accuracy.
+Run with -accplot option to see accuracy vs. threshold.
+
+ACC    0.70767   max_acc_thresh  0.038710
+PPV    0.70350   max_acc_thresh  0.038710
+NPV    0.71146   max_acc_thresh  0.038710
+SEN    0.68951   max_acc_thresh  0.038710
+SPC    0.72485   max_acc_thresh  0.038710
+PRE    0.70350   max_acc_thresh  0.038710
+REC    0.68951   max_acc_thresh  0.038710
+PRF    0.69643   max_acc_thresh  0.038710
+LFT    1.44653   max_acc_thresh  0.038710
+SAR    0.46718   max_acc_thresh  0.038710 wacc  1.000000 wroc  1.000000 wrms  1.000000 
+
+PRB    0.69774
+APR    0.78083
+ROC    0.79038
+R50    0.16536
+RKL    2958
+TOP1   1.00000
+TOP10  1.00000
+RMS    1.09652
+CA1    0.19671 19_0.05_bins
+CA2    0.76571 Bin_Size 100

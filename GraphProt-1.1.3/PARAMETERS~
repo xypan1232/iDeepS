@@ -1,0 +1,102 @@
+## Binaries ####################################################################
+
+## Other Binaries ##############################################################
+PERL:=perl
+RBIN:=R --vanilla
+SVRTRAIN:=svm-train
+SVRPREDICT:=svm-predict
+SHUF:=shuf
+BEDGRAPH2BIGWIG:=bedGraphToBigWig
+BASH:=/bin/bash
+BEDTOOLS:=bedtools
+GNUPLOT:=gnuplot
+# perf is available at http://www.cs.cornell.edu/~caruana/
+PERF:=perf
+# from ucsc tools
+TWOBITTOFA:=twoBitToFa
+WEBLOGO:=weblogo
+
+# prefix of train/test data
+# RNAcompete proteins
+# PROTEINS:=Fusip HuR PTB RBM4 SF2 SLM2 U1A VTS1 YB1
+PROTEINS:=testclip
+
+SGEARRAY=NO
+
+# select evaluation type: RNACOMPETE / CLIP
+# RNACOMPETE:
+#   filename handling for RNAcompete input
+#	expect input files ID_data_{full,weak}_{A,B}.fa
+# CLIP:
+#   filename handling for generic input
+#   fasta input ID.train.fa built automatically from
+#   ID.train.positives.fa, ID.train.negatives,fa [and ID.train.unknowns.fa]
+#   test input ID.test.fa built the same way
+EVAL_TYPE=CLIP
+
+# set SVM type: SVR / SGD
+SVM=SGD
+
+# set graph type:
+# SEQUENCE: plain sequence
+# SHREP: plain shrep graphs
+# CONTEXTSHREP: shrep graphs annotated with structural context
+GRAPH_TYPE=CONTEXTSHREP
+
+# folding parameters:
+# The primary window sizes are used for both shreps and accessibilities.
+# Secondary window size is only used for shreps.
+# W_PRIMARY defaults to 150 according to Lange & Maticzka et al. 2011.
+# W_PRIMARY-50 according to Lange & Maticzka et al. 2011.
+W_PRIMARY=80
+SHAPES_WINS=$(W_PRIMARY)
+SHAPES_SHIFT=25
+# maximum number of shreps
+SHREPS_MAX=3
+
+# enable/disable line search: YES/NO
+DO_LINESEARCH=NO
+# enable inner crossvalidation for parameter optimization
+LS_DO_INNER_CV=NO
+# enable/disable sgd-internal optimization
+DO_SGDOPT=YES
+# try this many variations of each parameter
+SGDOPT_STEPS=5
+
+# how many sequences to sample for parameter line search
+LINESEARCH_INPUT_SIZE:=1000
+
+# number of crossvalidation sets to use
+CV_FOLD:=10
+
+# number of iterations for the learningcurve evaluation
+LEARNINGCURVE_SPLITS:=10
+
+# select margins above this percentile as high affinity sites
+HAS_PERCENTILE=99
+
+# profile generation parameters
+# window size
+MARGINS_WINDOW=12
+# one of: (min, max, mean, median, sum)
+MARGINS_MEASURE=mean
+
+# motif elicitation: select the best TOP_WINDOWS for further processing
+TOP_WINDOWS=1000
+
+# amount of cache in MB used by libSVM
+SVR_CACHE:=10000
+
+# whether to keep intermediate files
+SECONDARY=YES
+
+# genome sequence
+GENOME=genome.fa
+# genome boundaries
+GENOME_BOUNDS=genome.tab
+
+## RNAcompete specific parameters ##############################################
+ifeq ($(EVAL_TYPE),RNACOMPETE)
+# sets for training: FULL/WEAK/ALL
+TRAINING_SETS=FULL
+endif

@@ -1,0 +1,243 @@
+.\" Man page for perf. 
+.\" Contact caruana@cs.cornell.edu to correct errors or omissions.
+.TH PERF 1 "28 April 2003" "5.00 [KDDCUP-2004]"
+.SH NAME
+perf \- compute machine learning performance metrics
+.SH SYNOPSIS
+perf [options] < <input> 
+.br
+perf [options] -file <input>
+.br
+perf [options] -files <targets> <predictions>
+.br
+perf -blocks [options "-apr" "-rkl" "-slq 0.01" "-top1"] < <input> 
+.br
+perf -blocks [options "-apr" "-rkl" "-slq 0.01" "-top1"] -file <input>
+.br
+perf -blocks [options "-apr" "-rkl" "-slq 0.01" "-top1"] -files <targets> <predictions>
+.SH DESCRIPTION
+.B perf
+computes many difference machine learning performance metrics.
+.SH OPTIONS
+
+.TP
+.I "PERFORMANCE MEASURES"
+.TP
+.B -ACC
+Accuracy
+.TP
+.B -RMS
+Root Mean Squared Error
+.TP
+.B -CXE             
+Mean Cross-Entropy
+.TP
+.B -ROC             
+ROC area
+.TP
+.B -R50             
+ROC area up to 50 negative examples
+.TP
+.B -SEN             
+Sensitivity
+.TP
+.B -SPC             
+Specificity
+.TP
+.B -NPV             
+Negative Predictive Value
+.TP
+.B -PPV             
+Positive Predictive Value
+.TP
+.B -PRE             
+Precision
+.TP
+.B -REC             
+Recall
+.TP
+.B -PRF             
+F1 score
+.TP 
+.B -PRB             
+Precision/Recall Break Even Point
+.TP
+.B -APR             
+Mean Average Precision
+.TP
+.B -LFT             
+Lift (at threshold)
+.TP
+.B -TOP1            
+Top 1: is the top ranked case positive
+.TP
+.B -TOP10           
+Top 10: is there a positive in the top 10 ranked cases
+.TP
+.B -NTOP <N>        
+How many positives in the top N ranked cases
+.TP
+.B -RKL             
+Rank of *last* (poorest ranked) positive case
+.TP 
+.B "-NRM <arg>"       
+Norm error using L<arg> metric
+.TP
+.B "-CST <tp> <fn> <fp> <tn>"
+Total cost using these cost values, plus min-cost results
+.TP
+.B "-SAR <wACC> <wROC> <wRMS>"
+SAR = (wACC*ACC + wROC*ROC + wRMS(1-RMS))/(wACC+wROC+wRMS)
+.br
+Typically wACC = wROC = wRMS = 1.0
+.TP
+.B "-CAL <bin_size>"
+CA1/CA2 scores
+.TP
+.B "-SLQ <bin_width> (usually bin_width = 0.01)"
+Slac Q-score
+
+.TP
+.I METRIC GROUPINGS
+.TP
+.B -all
+Display most metrics (the default if no options are specified)
+.TP
+.B -easy
+ROC, ACC and RMS
+.TP
+.B -stats
+Accuracy, confusion table metrics, lift
+.TP
+.B -confusion
+Confusion table plus all metrics in stat
+
+.TP 10
+.I PLOTS 
+(Only one plot can be output at a time)
+.TP
+.B "-plot roc"        
+Output ROC plot
+.TP
+.B "-plor pr"         
+Draw Precision/Recall plot
+.TP
+.B "-plot lift"       
+Draw Lift versus threshold plot
+.TP
+.B "-plot cost"      
+Draw Cost versus threshold plot
+.TP
+.B "-plot acc"      
+Draw Accuracy versus threshold plot
+
+.TP
+.I PARAMETERS
+.TP
+.B "-t <arg>"
+Set threshold [default threshold is 0.5 if not set]
+.TP
+.B "-percent <arg>"
+Set threshold so <arg> percent of data falls above threshold
+(is predicted positive)
+
+.TP
+.I INPUT
+.TP
+.B -blocks
+Input has BLOCK ID numbers in first column. Calculate performance
+for each block and report the mean performance across the blocks.
+Only works with APR, TOP1, RKL, and RMS.
+If using separate files for target and predictions input (-files
+option), the BLOCK ID numbers must be ithe first column of the
+target file, with no block numbers in the predictions file.
+.TP
+.B "-file  <file>"
+Read input from one file (1st col targets, 2nd col predictions)
+.TP
+.B "-files <targets file> <predictions file>"
+Read input from two separate files
+
+.SH EXAMPLES
+
+perf -ROC < results.txt
+.br
+perf -plot roc -file results.txt
+.br
+perf -ACC -RMS -PRE -REC -t 0 -files labels.txt predictions.txt
+
+.SH LICENSE
+
+This program is granted free of charge for research and education
+purposes.  You must obtain a license from the author to use it for
+commercial purposes.
+
+Please acknowledge perf in any scientific results and reports where
+perf was used.  Many of the performance metrics perf calculates are
+not always defined the same way by different communities.  By citing
+perf you make it clear exactly what metrics you are reporting.  We do
+not yet have a report describing perf, so the best way to acknowledge
+using to code is:
+
+       R. Caruana, The PERF Performance Evaluation Code,
+       http://www.cs.cornell.edu/~caruana/perf/
+
+The software must not be modified and distributed without prior
+permission of the author.
+
+By using perf you agree to the licensing terms.
+
+NO WARRANTY
+
+BECAUSE THIS PROGRAM IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
+FOR THE PROGRAM, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT
+WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER
+PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND,
+EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE
+PROGRAM IS WITH YOU.  SHOULD THE PROGRAM PROVE DEFECTIVE, YOU ASSUME
+THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+REDISTRIBUTE THE PROGRAM, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY
+GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF
+THE USE OR INABILITY TO USE THE PROGRAM (INCLUDING BUT NOT LIMITED TO
+LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY
+YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY
+OTHER PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGES.
+
+.SH SEE ALSO
+Perf is available from http://www.cs.cornell.edu/~caurana/perf/
+.SH BUGS
+No known bugs at this time.
+.SH AUTHORS
+
+Rich Caruana (caruana@cs.cornell.edu)
+.P
+.nf
+	Cornell University
+	Department of Computer Science
+	4157 Upson Hall
+	Ithaca, NY 14853
+	USA
+.fi
+.P
+Over the years, many people have helped with this code.  
+We'd like to thank:
+.P 
+.nf
+- Alex Niculescu
+- Filip Radlinski
+- Thorsten Joachims
+- Constantin Aliferis
+- Stefano Monti
+- Greg Cooper
+.fi
+
+.SH HISTORY
+5.00 \- First public release
+
+

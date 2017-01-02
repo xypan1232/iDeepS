@@ -1,0 +1,10 @@
+PTB 0               
+SLM2 0                
+VTS1 -0.02            
+U1A 0               
+RBM4 -0.01            
+YB1 0               
+Fusip -0.02             
+SF2 0               
+HuR -0.04    
+test 0
