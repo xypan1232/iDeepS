@@ -53,7 +53,7 @@ def load_label_seq(seq_file, outputfile, score_file, train = False):
     fw2.close()
 
 def run_graphprot(protein, fw  = None):
-    path = './datasets/clip/' + protein + '/30000/training_sample_0'
+    path = '../datasets/clip/' + protein + '/30000/training_sample_0'
     load_label_seq(os.path.join(path, 'sequences.fa.gz'), 'train', 'scorefile', train = True)
     #pdb.set_trace()
     clistr = 'perl GraphProt.pl --action train -fasta trainposi.fa  -negfasta trainnega.fa'
@@ -62,7 +62,7 @@ def run_graphprot(protein, fw  = None):
     #fp.close()
     score_str =subprocess.call(clistr, shell=True)
     #pdb.set_trace()
-    path = './datasets/clip/' + protein + '/30000/test_sample_0'
+    path = '../datasets/clip/' + protein + '/30000/test_sample_0'
     load_label_seq(os.path.join(path, 'sequences.fa.gz'), 'test.fa', 'scoretest')
     
     clistr = 'perl GraphProt.pl --action predict -fasta test.fa -model GraphProt.model'
@@ -92,7 +92,7 @@ def run_graphprot(protein, fw  = None):
     copyfile('GraphProt.predictions', protein + '_GraphProt.predictions')
 
 def run_predict():
-    data_dir = './datasets/clip'
+    data_dir = '../datasets/clip'
     fw = open('result_classification_graphport', 'w')
     for protein in os.listdir(data_dir):
         print protein
