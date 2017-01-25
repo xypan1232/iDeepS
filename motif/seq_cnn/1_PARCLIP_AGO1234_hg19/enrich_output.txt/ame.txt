@@ -1,0 +1,22 @@
+AME (Analysis of Motif Enrichment): Compiled on Dec 13 2016 at 17:34:01
+------------------------------
+Copyright (c) Robert McLeay <r.mcleay@imb.uq.edu.au> & Timothy Bailey <t.bailey@imb.uq.edu.au>, 2009.
+
+Command line
+ame --control shuff_seq -o /home/panxy/eclipse/ideep/ideep/motif/seq_cnn/1_PARCLIP_AGO1234_hg19/enrich_output.txt seq_enrich /home/panxy/eclipse/ideep/ideep/motif/seq_cnn/1_PARCLIP_AGO1234_hg19/filters_meme.txt
+
+Not in partition maximization mode. Fixing partition at the number of primary sequences (10000).
+
+Threshold p-value for reporting results: 0.05
+Motif p-values are corrected by #Motifs * #ThresholdsTested - (16 * 1 = 16)
+
+1. Fisher's exact test p-value of motif filter0  top 10000 seqs: 7.13e-64 (Corrected p-value: 1.141e-62)
+2. Fisher's exact test p-value of motif filter8  top 10000 seqs: 1.34e-48 (Corrected p-value: 2.145e-47)
+3. Fisher's exact test p-value of motif filter14  top 10000 seqs: 1.908e-18 (Corrected p-value: 3.052e-17)
+4. Fisher's exact test p-value of motif filter15  top 10000 seqs: 5.466e-16 (Corrected p-value: 8.746e-15)
+5. Fisher's exact test p-value of motif filter5  top 10000 seqs: 8.435e-15 (Corrected p-value: 1.35e-13)
+6. Fisher's exact test p-value of motif filter12  top 10000 seqs: 4.89e-13 (Corrected p-value: 7.824e-12)
+7. Fisher's exact test p-value of motif filter7  top 10000 seqs: 3.064e-11 (Corrected p-value: 4.902e-10)
+8. Fisher's exact test p-value of motif filter11  top 10000 seqs: 2.246e-10 (Corrected p-value: 3.593e-09)
+9. Fisher's exact test p-value of motif filter9  top 10000 seqs: 1.076e-06 (Corrected p-value: 1.721e-05)
+10. Fisher's exact test p-value of motif filter3  top 10000 seqs: 5.399e-06 (Corrected p-value: 8.639e-05)

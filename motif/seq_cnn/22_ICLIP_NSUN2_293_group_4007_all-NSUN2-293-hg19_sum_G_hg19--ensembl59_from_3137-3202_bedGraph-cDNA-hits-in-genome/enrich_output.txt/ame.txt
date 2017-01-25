@@ -1,0 +1,16 @@
+AME (Analysis of Motif Enrichment): Compiled on Dec 13 2016 at 17:34:01
+------------------------------
+Copyright (c) Robert McLeay <r.mcleay@imb.uq.edu.au> & Timothy Bailey <t.bailey@imb.uq.edu.au>, 2009.
+
+Command line
+ame --control shuff_seq -o /home/panxy/eclipse/ideep/ideep/motif/seq_cnn/22_ICLIP_NSUN2_293_group_4007_all-NSUN2-293-hg19_sum_G_hg19--ensembl59_from_3137-3202_bedGraph-cDNA-hits-in-genome/enrich_output.txt seq_enrich /home/panxy/eclipse/ideep/ideep/motif/seq_cnn/22_ICLIP_NSUN2_293_group_4007_all-NSUN2-293-hg19_sum_G_hg19--ensembl59_from_3137-3202_bedGraph-cDNA-hits-in-genome/filters_meme.txt
+
+Not in partition maximization mode. Fixing partition at the number of primary sequences (10000).
+
+Threshold p-value for reporting results: 0.05
+Motif p-values are corrected by #Motifs * #ThresholdsTested - (16 * 1 = 16)
+
+1. Fisher's exact test p-value of motif filter15  top 10000 seqs: 1.566e-11 (Corrected p-value: 2.506e-10)
+2. Fisher's exact test p-value of motif filter6  top 10000 seqs: 9.586e-10 (Corrected p-value: 1.534e-08)
+3. Fisher's exact test p-value of motif filter14  top 10000 seqs: 9.585e-08 (Corrected p-value: 1.534e-06)
+4. Fisher's exact test p-value of motif filter13  top 10000 seqs: 0.001421 (Corrected p-value: 0.0225)
