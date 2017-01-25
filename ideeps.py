@@ -46,8 +46,8 @@ from sklearn.metrics import roc_curve, auc
 import theano
 import subprocess as sp
 import scipy.stats as stats
-from seq_motifs import *
-import structure_motifs
+#from seq_motifs import *
+#import structure_motifs
 from keras import backend as K
 from rnashape_structure import run_rnashape
 
@@ -432,63 +432,6 @@ def reverse_complement(seq):
     seq = list(seq)
     seq.reverse()
     return ''.join(complement(seq))
-    
-def get_hg19_sequence():
-    chr_focus = ['chr1', 'chr2', 'chr3', 'chr4', 'chr5', 'chr6', 'chr7',
-     'chr8', 'chr9', 'chr10', 'chr11', 'chr12', 'chr13', 'chr14',
-     'chr15', 'chr16', 'chr17', 'chr18', 'chr19', 'chr20', 'chr21',
-     'chr22', 'chrX', 'chrY', 'chrM']
-    
-    sequences = {}
-    dir1 = 'hg19_seq/'
-    #for chr_name in chr_foc
-    for chr_name in chr_focus:
-        file_name = chr_name + '.fa.gz'
-        if not os.path.exists(dir1 + file_name):
-            print 'download genome sequence file'
-            cli_str = 'rsync -avzP rsync://hgdownload.cse.ucsc.edu/goldenPath/hg19/chromosomes/' + chr_name + '.fa.gz ' + dir1
-            fex = os.popen(cli_str, 'r')
-            fex.close()
-        
-        print 'file %s' %file_name
-        fp = gzip.open(dir1 + file_name, 'r')
-        sequence = ''
-        for line in fp:
-            if line[0] == '>':
-                name = line.split()[0]
-            else:
-                sequence = sequence + line.split()[0]
-        sequences[chr_name] =  sequence 
-        fp.close()
-    
-    return sequences
-
-def get_seq_for_RNA_bed(RNA_bed_file, whole_seq):
-    print RNA_bed_file
-    fp = gzip.open(RNA_bed_file, 'r')
-    fasta_file = RNA_bed_file.split('.')[0] + '.fa.gz'
-    fw = gzip.open(fasta_file, 'w')
-    
-    for line in fp:
-        if 'tract' in line:
-            continue
-        values = line.split()
-        chr_n = values[0]
-        start = int(values[1])
-        end = int(values[2])
-        #gene_name = values[4]
-        strand = values[3]
-        seq = whole_seq[chr_n]
-        extract_seq = seq[start-50: start + 51]
-        extract_seq = extract_seq.upper()
-        if strand == '-':
-            extract_seq =  reverse_complement(extract_seq)
-        
-        #fw.write('>%s\t%s\t%s\t%s\t%s\n' %(gene_name, chr_n, start, end, strand))
-        fw.write('%s\n'%extract_seq)
-            
-    fp.close()
-    fw.close()
 
 def preprocess_data(X, scaler=None, stand = False):
     if not scaler:
@@ -607,7 +550,7 @@ def set_cnn_model(input_dim, input_length):
     model = Sequential()
     model.add(Convolution1D(input_dim=input_dim,input_length=input_length,
                             nb_filter=nbfilter,
-                            filter_length=7,
+                            filter_length=10,
                             border_mode="valid",
                             #activation="relu",
                             subsample_length=1))
@@ -682,7 +625,7 @@ def get_struct_network():
     model = Sequential()
     model.add(Convolution1D(input_dim=6,input_length=107,
                             nb_filter=nbfilter,
-                            filter_length=7,
+                            filter_length=10,
                             border_mode="valid",
                             #activation="relu",
                             subsample_length=1))
@@ -1009,8 +952,8 @@ def run_network(model, total_hid, training, testing, y, validation, val_y, prote
     model.fit(training, y, batch_size=50, nb_epoch=30, verbose=0, validation_data=(validation, val_y), callbacks=[earlystopper])
     
     #pdb.set_trace()
-    get_motif(model, testing, protein, y, index = 0, dir1 = 'seq_cnn1/')
-    get_motif(model, testing, protein, y, index = 1, dir1 = 'structure_cnn1/', structure = structure)
+    #get_motif(model, testing, protein, y, index = 0, dir1 = 'seq_cnn1/')
+    #get_motif(model, testing, protein, y, index = 1, dir1 = 'structure_cnn1/', structure = structure)
 
     predictions = model.predict_proba(testing)[:,1]
     return predictions, model
@@ -1313,7 +1256,7 @@ def get_binding_motif_fea():
 
 def run_predict():
     data_dir = './datasets/clip'
-    fw = open('result_file_struct', 'w')
+    fw = open('result_file_struct_auc', 'w')
     for protein in os.listdir(data_dir):
         print protein
 
