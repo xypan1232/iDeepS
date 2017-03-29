@@ -96,110 +96,6 @@ def merge_seperate_network(X_train1, X_train2, Y_train):
     
     return model
 
-def get_blend_data(j, clf, skf, X_test, X_dev, Y_dev, blend_train, blend_test):
-        print 'Training classifier [%s]' % (j)
-        blend_test_j = np.zeros((X_test.shape[0], len(skf))) # Number of testing data x Number of folds , we will take the mean of the predictions later
-        for i, (train_index, cv_index) in enumerate(skf):
-            print 'Fold [%s]' % (i)
-            
-            # This is the training and validation set
-            X_train = X_dev[train_index]
-            Y_train = Y_dev[train_index]
-            X_cv = X_dev[cv_index]
-            Y_cv = Y_dev[cv_index]
-            
-            clf.fit(X_train, Y_train)
-            
-            # This output will be the basis for our blended classifier to train against,
-            # which is also the output of our classifiers
-            #blend_train[cv_index, j] = clf.predict(X_cv)
-            #blend_test_j[:, i] = clf.predict(X_test)
-            blend_train[cv_index, j] = clf.predict_proba(X_cv)[:,1]
-            blend_test_j[:, i] = clf.predict_proba(X_test)[:,1]
-        # Take the mean of the predictions of the cross validation set
-        blend_test[:, j] = blend_test_j.mean(1)
-    
-        print 'Y_dev.shape = %s' % (Y_dev.shape)
-
-
-def poweig(A, x0, maxiter = 100, ztol= 1.0e-5, mode= 0, teststeps=1):
-    """
-    Performs iterative power method for dominant eigenvalue.
-     A  - input matrix.
-     x0 - initial estimate vector.
-     maxiter - maximum iterations
-     ztol - zero comparison.
-     mode:
-       0 - divide by last nonzero element.
-       1 - unitize.
-    Return value:
-     eigenvalue, eigenvector
-    """
-    m    = len(A)
-    xi   = x0[:] 
- 
-    for n in range(maxiter):
-       # matrix vector multiplication.
-       xim1 = xi[:]
-       for i in range(m):
-           xi[i] = 0.0
-           for j in range(m):
-             xi[i] += A[i][j] * xim1[j]
-       print n, xi
-       if mode == 0:
-          vlen = sqrt(sum([xi[k]**2 for k in range(m)]))
-          xi = [xi[k] /vlen for k in range(m)]
-       elif mode == 1:
-          for k in range(m-1, -1, -1):
-             c = abs(xi[k])
-             if c > 1.0e-5:
-                xi = [xi[k] /c for k in range(m)]
-                break
-       # early termination test.
-       if n % teststeps == 0:
-          S = sum([xi[k]-xim1[k] for k in range(m)])
-          if abs(S) < ztol:
-             break
-       #print n, xi
-    # Compute Rayleigh quotient.
-    numer = sum([xi[k] * xim1[k] for k in range(m)])
-    denom = sum([xim1[k]**2 for k in range(m)])
-    xlambda = numer/denom
-    return xlambda, xi
-
-def get_larget_eign(cov_mat):
-    evals, evecs = np.linalg.eigh(cov_mat)
-    idx = np.argsort(evals)[::-1]
-    evecs = evecs[:,idx]
-    #evals = evals[idx]
-    return evecs[0]
-
-def get_meta_predictor(eg_array):
-    normed, scl=preprocess_data(eg_array)
-    covariance = np.cov(normed.T)
-    #weights = centrality_scores(covariance)
-    '''
-    evals, evecs = np.linalg.eigh(cov_mat)
-    idx = np.argsort(evals)[::-1]
-    evecs = evecs[:,idx]
-    evals = evals[idx]
-    '''
-    '''
-    x0 = np.array([1] * normed.shape[1])
-    #pdb.set_trace()
-    ramda, weights = poweig(covariance, x0)
-    '''
-    weights = get_larget_eign(covariance)
-    weights = np.array(weights)
-    weights = weights/weights.sum()
-    #pdb.set_trace()
-    ensemble_score = np.dot(eg_array, weights)
-    #ensemble_score = [ 0 if x<0 else x for x in ensemble_score]
-    return ensemble_score
-    
-    
-
-
 def read_seq(seq_file):
     seq_list = []
     seq = ''
@@ -546,7 +442,7 @@ class MyReshape(Layer):
 '''
 
 def set_cnn_model(input_dim, input_length):
-    nbfilter = 12
+    nbfilter = 16
     model = Sequential()
     model.add(Convolution1D(input_dim=input_dim,input_length=input_length,
                             nb_filter=nbfilter,
@@ -566,7 +462,7 @@ def get_cnn_network():
      get_feature = theano.function([origin_model.layers[0].input],origin_model.layers[11].get_output(train=False),allow_input_downcast=False)
     feature = get_feature(data)
     '''
-    nbfilter = 12
+    nbfilter = 16
     print 'configure cnn network'
 
     seq_model = set_cnn_model(4, 107)
@@ -590,13 +486,13 @@ def get_cnn_network_old():
     feature = get_feature(data)
     '''
     print 'configure cnn network'
-    nbfilter = 12
+    nbfilter = 16
 
 
     model = Sequential()
     model.add(Convolution1D(input_dim=4,input_length=107,
                             nb_filter=nbfilter,
-                            filter_length=7,
+                            filter_length=10,
                             border_mode="valid",
                             #activation="relu",
                             subsample_length=1))
@@ -620,7 +516,7 @@ def get_struct_network():
     feature = get_feature(data)
     '''
     print 'configure cnn network'
-    nbfilter = 12
+    nbfilter = 16
 
     model = Sequential()
     model.add(Convolution1D(input_dim=6,input_length=107,
@@ -677,7 +573,7 @@ def get_structure_motif_fig(filter_weights, filter_outs, out_dir, protein, seq_t
         filter_outs = filter_outs[sample_i]
     
     num_filters = filter_weights.shape[0]
-    filter_size = filter_weights.shape[2]
+    filter_size = 7 #filter_weights.shape[2]
 
     
     #################################################################
@@ -727,7 +623,7 @@ def get_motif_fig(filter_weights, filter_outs, out_dir, protein, sample_i = 0):
         filter_outs = filter_outs[sample_i]
     
     num_filters = filter_weights.shape[0]
-    filter_size = filter_weights.shape[2]
+    filter_size = 7#filter_weights.shape[2]
 
     #pdb.set_trace()
     #################################################################
@@ -996,8 +892,8 @@ def calculate_auc(net, hid, train, test, true_y, train_y, rf = False, validation
 def run_seq_struct_cnn_network(protein, seq = True, fw = None, oli = False, min_len = 301):
     training_data = load_data("./datasets/clip/%s/30000/training_sample_0" % protein, seq = seq, oli = oli)
     
-    seq_hid = 12
-    struct_hid = 12
+    seq_hid = 16
+    struct_hid = 16
     #pdb.set_trace()
     train_Y = training_data["Y"]
     print len(train_Y)
