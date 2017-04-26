@@ -242,59 +242,6 @@ def get_4_nucleotide_composition(tris, seq, pythoncount = True):
         #pdb.set_trace()        
     return tri_feature
 
-def read_seq_graphprot(seq_file, label = 1, min_len = 301):
-    seq_list = []
-    labels = []
-    seq = ''
-    with open(seq_file, 'r') as fp:
-        for line in fp:
-            if line[0] == '>':
-                name = line[1:-1]
-            else:
-                seq = line[:-1].upper()
-                seq_len = len(seq)
-                if seq_len < min_len:
-                    continue
-                
-                gap_ind = (seq_len- min_len)/2 
-                new_seq = seq[gap_ind:len(seq) - gap_ind]
-                if len(new_seq) > min_len:
-                    new_seq = new_seq[:min_len]
-                if len(new_seq) < min_len:
-                    pdb.set_trace()
-                #pdb.set_trace()
-                seq_array = get_RNA_seq_concolutional_array(new_seq)
-                seq_list.append(seq_array)
-                labels.append(label)
-
-             
-    
-    return seq_list, labels
-
-def read_structure_graphprot(seq_file, label = 1, min_len = 301):
-    seq_list = []
-    labels = []
-    seq = ''
-    with open(seq_file, 'r') as fp:
-        for line in fp:
-            if line[0] == '>':
-                name = line[1:-1]
-            else:
-                seq = line[:-1].upper()
-                seq_len = len(seq)
-                if seq_len < min_len:
-                    continue
-                
-                gap_ind = (seq_len- min_len)/2 
-                new_seq = seq[gap_ind:len(seq) - gap_ind -1]
-                if len(new_seq) > min_len:
-                    new_seq = new_seq[:min_len]
-                seq_array = get_RNA_structure_concolutional_array(new_seq)
-                seq_list.append(seq_array) 
-                labels.append(label)
-    
-    return seq_list, labels
-
 def load_data(path, seq = True, oli = True):
     """
         Load data matrices from the specified folder.
