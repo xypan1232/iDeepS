@@ -5,7 +5,7 @@ then we use bidirectional LSTM to capture the long range dependencies between bi
 Finally the learned abstract features are fed into classification layer to predict RBP binding sites on RNAs.
 We comprehensively evaluate iDeepS on verified RBP binding sites derived from large-scale representative CLIP-seq datasets.
 
-<br>
+
 # Dependency <br>
 <a href=https://github.com/fchollet/keras/>keras 1.1.2 library</a> <br>
 <a href=https://github.com/scikit-learn/scikit-learn>sklearn</a> <br>
