@@ -1,0 +1,25 @@
+AME (Analysis of Motif Enrichment): Compiled on Dec 13 2016 at 17:34:01
+------------------------------
+Copyright (c) Robert McLeay <r.mcleay@imb.uq.edu.au> & Timothy Bailey <t.bailey@imb.uq.edu.au>, 2009.
+
+Command line
+ame --control shuff_seq -o /home/panxy/eclipse/ideep/ideep/motif/structure_cnn/19_ICLIP_hnRNPL_U266_group_3986_all-hnRNPL-U266-hg19_sum_G_hg19--ensembl59_from_2485_bedGraph-cDNA-hits-in-genome/structure_enrich_output seq_enrich new_filters_meme.txt
+
+Not in partition maximization mode. Fixing partition at the number of primary sequences (10000).
+
+Threshold p-value for reporting results: 0.05
+Motif p-values are corrected by #Motifs * #ThresholdsTested - (16 * 1 = 16)
+
+1. Fisher's exact test p-value of motif filter3  top 10000 seqs: 4.328e-73 (Corrected p-value: 6.925e-72)
+2. Fisher's exact test p-value of motif filter13  top 10000 seqs: 1.716e-20 (Corrected p-value: 2.745e-19)
+3. Fisher's exact test p-value of motif filter15  top 10000 seqs: 7.037e-12 (Corrected p-value: 1.126e-10)
+4. Fisher's exact test p-value of motif filter7  top 10000 seqs: 1.075e-07 (Corrected p-value: 1.72e-06)
+5. Fisher's exact test p-value of motif filter9  top 10000 seqs: 2.698e-07 (Corrected p-value: 4.318e-06)
+6. Fisher's exact test p-value of motif filter4  top 10000 seqs: 8.465e-07 (Corrected p-value: 1.354e-05)
+7. Fisher's exact test p-value of motif filter12  top 10000 seqs: 9.294e-06 (Corrected p-value: 0.0001487)
+8. Fisher's exact test p-value of motif filter2  top 10000 seqs: 1.421e-05 (Corrected p-value: 0.0002273)
+9. Fisher's exact test p-value of motif filter11  top 10000 seqs: 6.758e-05 (Corrected p-value: 0.001081)
+10. Fisher's exact test p-value of motif filter0  top 10000 seqs: 7.425e-05 (Corrected p-value: 0.001187)
+11. Fisher's exact test p-value of motif filter10  top 10000 seqs: 7.425e-05 (Corrected p-value: 0.001187)
+12. Fisher's exact test p-value of motif filter5  top 10000 seqs: 0.0003583 (Corrected p-value: 0.005718)
+13. Fisher's exact test p-value of motif filter8  top 10000 seqs: 0.002253 (Corrected p-value: 0.03545)
