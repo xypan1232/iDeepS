@@ -1106,7 +1106,7 @@ def load_data_file(inputfile, seq = True, onlytest = False):
         
     return data
 
-def run_network_new(model, total_hid, training, testing, y, validation, val_y, batch_size=50, nb_epoch=30):
+def run_network_new(model, total_hid, training, y, validation, val_y, batch_size=50, nb_epoch=30):
     model.add(Dense(2, input_shape=(total_hid,)))
     model.add(Activation('softmax'))
     
@@ -1152,7 +1152,7 @@ def train_ideeps(data_file, model_dir, batch_size= 50, nb_epoch = 30):
     val_y, encoder = preprocess_labels(validation_label, encoder = encoder)
     
     total_hid = seq_hid + struct_hid
-    model = run_network_new(seq_net, total_hid, cnn_train, seq_test, true_y, y, validation = cnn_validation, val_y = val_y, batch_size=batch_size, nb_epoch = nb_epoch)
+    model = run_network_new(seq_net, total_hid, cnn_train, y, validation = cnn_validation, val_y = val_y, batch_size=batch_size, nb_epoch = nb_epoch)
     
     model.save(os.path.join(model_dir,'model.pkl'))
 
