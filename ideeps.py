@@ -245,7 +245,7 @@ def get_4_nucleotide_composition(tris, seq, pythoncount = True):
         #pdb.set_trace()        
     return tri_feature
 
-def load_data(path, seq = True, oli = True):
+def load_data(path, seq = True, oli = False):
     """
         Load data matrices from the specified folder.
     """
