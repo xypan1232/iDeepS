@@ -23,10 +23,9 @@ We comprehensively evaluate iDeepS on verified RBP binding sites derived from la
 
  python ideeps.py [-h] [--data_file <data_file>] [--train TRAIN] <br>
                 [--model_dir MODEL_DIR] [--predict PREDICT] <br>
-                [--out_file OUT_FILE] <br>
-                [--motif MOTIF] [--batch_size BATCH_SIZE] <nr>
+                [--out_file OUT_FILE] [--batch_size BATCH_SIZE] <nr>
                 [--n_epochs N_EPOCHS] <br> <br>
-where the input training file should be sequences.fa.gz
+where the input training file should be sequences.fa.gz with label info in each head per sequence.<br>
 
 # Use example
 <b>1.</b> Train the model using your data (currently only support fix-length sequences): <br>
