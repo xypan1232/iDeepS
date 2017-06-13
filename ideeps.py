@@ -1067,7 +1067,7 @@ def run_network_new(model, total_hid, training, y, validation, val_y, batch_size
     return model    
     
 def train_ideeps(data_file, model_dir, batch_size= 50, nb_epoch = 30):
-    training_data = load_data_file(data_filen)
+    training_data = load_data_file(data_file)
     
     seq_hid = 16
     struct_hid = 16
@@ -1121,7 +1121,7 @@ def test_ideeps(data_file, outfile, onlytest = True):
     fw.write(myprob)
     fw.close()
     
-def run_ideeps(args):
+def run_ideeps(parser):
     data_file = parser.data_file
     out_file = parser.out_file
     train = parser.train
@@ -1145,7 +1145,7 @@ def run_ideeps(args):
         
 
 def parse_arguments(parser):
-    parser.add_argument('--data_file', type=str, metavar='<data_file>', help=' the sequence file used for training, it contains sequences and label (0, 1) in each head of sequence.')
+    parser.add_argument('--data_file', type=str, metavar='<data_file>', help='the sequence file used for training, it contains sequences and label (0, 1) in each head of sequence.')
     parser.add_argument('--train', type=bool, default=True, help='use this option for training model')
     parser.add_argument('--model_dir', type=str, default='models', help='The directory to save the trained models for future prediction')
     parser.add_argument('--predict', type=bool, default=False,  help='Predicting the RNA-protein binding sites for your input sequences, if using train, then it will be False')
