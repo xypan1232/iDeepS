@@ -26,6 +26,7 @@ from sklearn.calibration import CalibratedClassifierCV
 from sklearn.cross_validation import StratifiedKFold
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_curve, auc
+from sklearn.externals import joblib 
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -50,6 +51,7 @@ import scipy.stats as stats
 #import structure_motifs
 from keras import backend as K
 from rnashape_structure import run_rnashape
+import argparse
 
 def calculate_performace(test_num, pred_y,  labels):
     tp =0
@@ -1069,33 +1071,6 @@ def read_fasta_file(fasta_file):
     
     return seq_dict, name_list
 
-            
-def get_binding_motif_fea():
-    data_dir = '/home/panxy/eclipse/ideep/datasets/clip/'
-    protein_dirs = os.listdir(data_dir)
-    for protein in protein_dirs:
-        new_dir = data_dir + protein + '/30000/'
-        for beddir in os.listdir(new_dir):
-            print beddir
-            #pdb.set_trace()
-            path = new_dir + beddir
-            fas_name = os.path.join(path, 'sequences.fa')
-            fw = open(fas_name, 'w')
-            seq_file = os.path.join(path, 'sequences.fa.gz')
-            seq_dict, name_list = read_fasta_file(seq_file)
-            
-            for name in name_list:
-                values = name.rstrip().split(';')
-                posi = values[0].split(',')
-                coor = posi[0] + ':' + posi[2] + '-' + posi[3]
-                fw.write('>' + coor + '\n')
-                fw.write(seq_dict[name] + '\n') 
-            fw.close()
-            
-            #pdb.set_trace()
-            clistr = './get_RNA_motif_fea.sh ' + path + '>/dev/null 2>&1'
-            f_cli = os.popen(clistr, 'r')
-            f_cli.close()
 
 def run_predict():
     data_dir = './datasets/clip'
@@ -1108,36 +1083,44 @@ def run_predict():
         run_seq_struct_cnn_network(protein, seq = True, fw= fw)
 
     fw.close()
+    
+def run_ideeps(args):
+    data_file = parser.data_file
+    out_file = parser.out_file
+    train = parser.train
+    model_dir = parser.model_dir
+    predict = parser.predict
+    batch_size = parser.batch_size
+    n_epochs = parser.n_epochs
+    
+    if not os.path.exists(model_dir):
+        os.makedirs(model_dir)
+    
+    if predict:
+        train = False
+ 
+    if train:
+        print 'model training'
+        train_ideeps(data_dir, model_dir, batch_size= batch_size, nb_epoch = n_epochs)
+    else:
+        print 'model prediction'
+        test_ideeps(data_dir, model_dir, outfile = out_file)
+        
 
-def calculate_perofrmance(inputfile='../comp_result'):
-    result = []
-    with open(inputfile) as fp:
-        for line in fp:
-            values = line.rstrip().split('&')
-            result.append([float(values[0]), float(values[1])])
-    res_array = numpy.array(result)
-    print np.mean(res_array, axis=0)
-    print np.std(res_array, axis=0)
+def parse_arguments(parser):
+    parser.add_argument('--data_file', type=str, metavar='<data_file>', help=' the sequence file used for training')
+    parser.add_argument('--train', type=bool, default=True, help='use this option for training model')
+    parser.add_argument('--model_dir', type=str, default='models', help='The directory to save the trained models for future prediction')
+    parser.add_argument('--predict', type=bool, default=False,  help='Predicting the RNA-protein binding sites for your input sequences, if using train, then it will be False')
+    parser.add_argument('--out_file', type=str, default='prediction.txt', help='The output file used to store the prediction probability of testing data')
+    parser.add_argument('--batch_size', type=int, default=100, help='The size of a single mini-batch (default value: 100)')
+    parser.add_argument('--n_epochs', type=int, default=20, help='The number of training epochs (default value: 20)')
+    args = parser.parse_args()
+    return args
 
-def read_meta_file(inputfile):
-    fp =open(inputfile, 'r')
-    head = True
-    fw = open('download.sh', 'w')
-    for line in fp:
-        if head:
-            head = False
-            continue
-        if '16 tissues mixture' in line:
-            continue
-        values = line.rstrip().split()
-        tissue = values[-1]
-        url = values[-7]
-        outname = url.split('/')[-1].split('.')[0]
-        new_cli = 'curl "' + url + '" -o "' + outname + '_' + tissue + '.fastq.gz"'
-        fw.write(new_cli + '\n')
-    fp.close()
-    fw.close()
-             
+         
 if __name__ == "__main__":
-    run_predict()
+    parser = argparse.ArgumentParser()
+    args = parse_arguments(parser)
+    run_ideeps(args)
 
