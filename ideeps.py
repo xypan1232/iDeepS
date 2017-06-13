@@ -1163,10 +1163,10 @@ def test_ideeps(data_file, outfile, onlytest = True):
     
     print 'predicting'    
     
-    seq_test = test_data["seq"]
-    structure = test_data["structure"]
+    testing = test_data["seq"] #it includes one-hot encoding sequence and structure
+    #structure = test_data["structure"]
     model = load_model(os.path.join(model_dir,'model.pkl')) 
-    testing = [seq_test, structure]
+    
     pred = model.predict_proba(testing)
     
     fw = open(outfile, 'w')
