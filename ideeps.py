@@ -1086,7 +1086,7 @@ def run_predict():
 
     fw.close()
     
-def load_data_file(inputfile, seq = True):
+def load_data_file(inputfile, seq = True, onlytest = False):
     """
         Load data matrices from the specified folder.
     """
@@ -1099,8 +1099,11 @@ def load_data_file(inputfile, seq = True):
         tmp.append(seq_onehot)
         data["seq"] = tmp
         data["structure"] = structure
-    
-    data["Y"] = load_label_seq(inputfile)
+    if onlytest:
+        data["Y"] = []
+    else:
+        data["Y"] = load_label_seq(inputfile)
+        
     return data
 
 def run_network_new(model, total_hid, training, testing, y, validation, val_y, batch_size=50, nb_epoch=30):
@@ -1153,8 +1156,8 @@ def train_ideeps(data_file, model_dir, batch_size= 50, nb_epoch = 30):
     
     model.save(os.path.join(model_dir,'model.pkl'))
 
-def test_ideeps(data_file, outfile):
-    test_data = load_data_file(data_file)
+def test_ideeps(data_file, outfile, onlytest = True):
+    test_data = load_data_file(data_file, onlytest= onlytest)
     print len(test_data)
     true_y = test_data["Y"].copy()
     
@@ -1192,7 +1195,7 @@ def run_ideeps(args):
         train_ideeps(data_file, model_dir, batch_size= batch_size, nb_epoch = n_epochs)
     else:
         print 'model prediction'
-        test_ideeps(data_file, model_dir, outfile = out_file)
+        test_ideeps(data_file, model_dir, outfile = out_file, onlytest = True)
         
 
 def parse_arguments(parser):
