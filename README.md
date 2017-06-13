@@ -35,7 +35,7 @@ python ideeps.py --train=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/
  --data_file: the <b>training</b> sequence file sequences.fa.gz with label informaiton in the head. <br>
 <br>
 <b>2.</b> predict the binding probability for your sequences (you need use the same dir for saved models in training step): <br>
- python ideeps.py --predict=True --data_dir=datasets/clip/10_PARCLIP_ELAVL1A_hg19/5000/test_sample_0/sequences.fa.gz --model_dir=models --out_file=YOUR_OUTFILE
+ python ideeps.py --predict=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/5000/test_sample_0/sequences.fa.gz --model_dir=models --out_file=YOUR_OUTFILE
 <br> <br>
 --model_dir: The saved dir for models in training step. <br>
 --data_file: configure your <b>testing</b> sequence file sequences.fa.gz.
