@@ -660,59 +660,6 @@ def get_motif_fig(filter_weights, filter_outs, out_dir, protein, sample_i = 0):
         print filter_outs.shape
         # plot filter-sequence heatmap
         plot_filter_seq_heat(filter_outs, '%s/filter_seqs.pdf'%out_dir)
-
-def calculateInformationContentOfMostLikelySequence(self, sequenceNumber):
-        mostLikelyPath = self.getMostLikelyPath()[1:-1]
-
-        informationContent = []
-        for stateIndex in mostLikelyPath:
-            distribution = self.getEmission(stateIndex)
-
-            shannonEntropy = 0
-            for baseIndex in xrange(4):
-                shannonEntropy -= distribution[baseIndex] * math.log(distribution[baseIndex], 2)
-            smallSampleCorrection = 3.0 / (math.log1p(2) * 2 * sequenceNumber)
-            informationContent.append(2 - (shannonEntropy + smallSampleCorrection))
-
-        return informationContent
-
-def calculateInformationContentStructure(self, sequenceNumber):
-    probabilityToGetIntoState = self._getStateProbabilities()
-
-    informationContent = []
-    for position in xrange((self.N - 2 ) / 5):
-        probs = []
-        for structureIndex in xrange(5):
-            probs.append(probabilityToGetIntoState[1 + (5 * position) + structureIndex])
-
-        shannonEntropy = 0
-        for structureIndex in xrange(5):
-            scaledProb = probs[structureIndex] / float(sum(probs))
-            shannonEntropy -= scaledProb * math.log(scaledProb, 2)
-        smallSampleCorrection = 4.0 / (math.log1p(2) * 2 * sequenceNumber)
-        informationContent.append(math.log(5, 2) - (shannonEntropy + smallSampleCorrection))
-
-    return informationContent
-
-def calculateInformationContentCombined(self, sequenceNumber):
-    probabilityToGetIntoState = self._getStateProbabilities()
-
-    informationContent = []
-    for position in xrange((self.N - 2 ) / 5):
-        probs = []
-        for stateIndex in xrange(1 + (5 * position), 6 + (5 * position)):
-            distribution = self.getEmission(stateIndex)
-            for baseIndex in xrange(4):
-                probs.append(probabilityToGetIntoState[stateIndex] * distribution[baseIndex])
-
-        shannonEntropy = 0
-        for combinedIndex in xrange(20):
-            scaledProb = probs[combinedIndex] / float(sum(probs))
-            shannonEntropy -= scaledProb * math.log(scaledProb, 2)
-        smallSampleCorrection = 19.0 / (math.log1p(2) * 2 * sequenceNumber)
-        informationContent.append(math.log(20, 2) - (shannonEntropy + smallSampleCorrection))
-
-    return informationContent
     
 def get_seq_targets(protein):
     path = "./datasets/clip/%s/30000/test_sample_0" % protein
@@ -880,9 +827,8 @@ def run_seq_struct_cnn_network(protein, seq = True, fw = None, oli = False, min_
     
     print 'predicting'    
     if seq:
-        seq_test = test_data["seq"]
-        structure = test_data["structure"]
-        testing = [seq_test, structure]
+        testing = test_data["seq"]
+        #structure = test_data["structure"]
         seq_auc, seq_predict = calculate_auc(seq_net, seq_hid + struct_hid, cnn_train, testing, true_y, y, validation = cnn_validation,
                                               val_y = val_y, protein = protein,  rf= rf, structure = structure)
         seq_train = []
