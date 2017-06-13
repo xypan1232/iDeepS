@@ -1102,7 +1102,7 @@ def train_ideeps(data_file, model_dir, batch_size= 50, nb_epoch = 30):
     
     model.save(os.path.join(model_dir,'model.pkl'))
 
-def test_ideeps(data_file, outfile, onlytest = True):
+def test_ideeps(data_file, model_dir, outfile='prediction.txt', onlytest = True):
     test_data = load_data_file(data_file, onlytest= onlytest)
     print len(test_data)
     true_y = test_data["Y"].copy()
