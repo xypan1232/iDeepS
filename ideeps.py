@@ -17,6 +17,7 @@ from keras.layers.convolutional import Convolution2D, MaxPooling2D,Convolution1D
 from keras import regularizers
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.constraints import maxnorm
+from keras.models import load_model
 #from seya.layers.recurrent import Bidirectional
 from sklearn import svm, grid_search
 from sklearn.preprocessing import LabelEncoder
@@ -881,7 +882,8 @@ def run_seq_struct_cnn_network(protein, seq = True, fw = None, oli = False, min_
     if seq:
         seq_test = test_data["seq"]
         structure = test_data["structure"]
-        seq_auc, seq_predict = calculate_auc(seq_net, seq_hid + struct_hid, cnn_train, seq_test, true_y, y, validation = cnn_validation,
+        testing = [seq_test, structure]
+        seq_auc, seq_predict = calculate_auc(seq_net, seq_hid + struct_hid, cnn_train, testing, true_y, y, validation = cnn_validation,
                                               val_y = val_y, protein = protein,  rf= rf, structure = structure)
         seq_train = []
         seq_test = []
@@ -1084,6 +1086,92 @@ def run_predict():
 
     fw.close()
     
+def load_data_file(inputfile, seq = True):
+    """
+        Load data matrices from the specified folder.
+    """
+    path = os.path.dirname(inputfile)
+    data = dict()
+    if seq: 
+        tmp = []
+        tmp.append(read_seq(inputfile))
+        seq_onehot, structure = read_structure(inputfile, path)
+        tmp.append(seq_onehot)
+        data["seq"] = tmp
+        data["structure"] = structure
+    
+    data["Y"] = load_label_seq(inputfile)
+    return data
+
+def run_network_new(model, total_hid, training, testing, y, validation, val_y, batch_size=50, nb_epoch=30):
+    model.add(Dense(2, input_shape=(total_hid,)))
+    model.add(Activation('softmax'))
+    
+    model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
+    #pdb.set_trace()
+    print 'model training'
+
+    earlystopper = EarlyStopping(monitor='val_loss', patience=5, verbose=0)
+
+    model.fit(training, y, batch_size=batch_size, nb_epoch=nb_epoch, verbose=0, validation_data=(validation, val_y), callbacks=[earlystopper])
+
+    return model    
+    
+def train_ideeps(data_file, model_dir, batch_size= 50, nb_epoch = 30)
+    training_data = load_data_file(data_filen)
+    
+    seq_hid = 16
+    struct_hid = 16
+    #pdb.set_trace()
+    train_Y = training_data["Y"]
+    print len(train_Y)
+    #pdb.set_trace()
+    training_indice, training_label, validation_indice, validation_label = split_training_validation(train_Y)
+    #pdb.set_trace()
+    
+    cnn_train  = []
+    cnn_validation = []
+    seq_data = training_data["seq"][0]
+    #pdb.set_trace()
+    seq_train = seq_data[training_indice]
+    seq_validation = seq_data[validation_indice] 
+    struct_data = training_data["seq"][1]
+    struct_train = struct_data[training_indice]
+    struct_validation = struct_data[validation_indice] 
+    cnn_train.append(seq_train)
+    cnn_train.append(struct_train)
+    cnn_validation.append(seq_validation)
+    cnn_validation.append(struct_validation)        
+    seq_net =  get_cnn_network()
+    seq_data = []
+            
+    y, encoder = preprocess_labels(training_label)
+    val_y, encoder = preprocess_labels(validation_label, encoder = encoder)
+    
+    total_hid = seq_hid + struct_hid
+    model = run_network_new(seq_net, total_hid, cnn_train, seq_test, true_y, y, validation = cnn_validation, val_y = val_y, batch_size=batch_size, nb_epoch = nb_epoch)
+    
+    model.save(os.path.join(model_dir,'model.pkl'))
+
+def test_ideeps(data_file, outfile):
+    test_data = load_data_file(data_file)
+    print len(test_data)
+    true_y = test_data["Y"].copy()
+    
+    print 'predicting'    
+    
+    seq_test = test_data["seq"]
+    structure = test_data["structure"]
+    model = load_model(os.path.join(model_dir,'model.pkl')) 
+    testing = [seq_test, structure]
+    pred = model.predict_proba(testing)
+    
+    fw = open(outfile, 'w')
+    myprob = "\n".join(map(str, predictions[:, 1]))
+    #fw.write(mylabel + '\n')
+    fw.write(myprob)
+    fw.close()
+    
 def run_ideeps(args):
     data_file = parser.data_file
     out_file = parser.out_file
@@ -1101,20 +1189,20 @@ def run_ideeps(args):
  
     if train:
         print 'model training'
-        train_ideeps(data_dir, model_dir, batch_size= batch_size, nb_epoch = n_epochs)
+        train_ideeps(data_file, model_dir, batch_size= batch_size, nb_epoch = n_epochs)
     else:
         print 'model prediction'
-        test_ideeps(data_dir, model_dir, outfile = out_file)
+        test_ideeps(data_file, model_dir, outfile = out_file)
         
 
 def parse_arguments(parser):
-    parser.add_argument('--data_file', type=str, metavar='<data_file>', help=' the sequence file used for training')
+    parser.add_argument('--data_file', type=str, metavar='<data_file>', help=' the sequence file used for training, it contains sequences and label (0, 1) in each head of sequence.')
     parser.add_argument('--train', type=bool, default=True, help='use this option for training model')
     parser.add_argument('--model_dir', type=str, default='models', help='The directory to save the trained models for future prediction')
     parser.add_argument('--predict', type=bool, default=False,  help='Predicting the RNA-protein binding sites for your input sequences, if using train, then it will be False')
     parser.add_argument('--out_file', type=str, default='prediction.txt', help='The output file used to store the prediction probability of testing data')
-    parser.add_argument('--batch_size', type=int, default=100, help='The size of a single mini-batch (default value: 100)')
-    parser.add_argument('--n_epochs', type=int, default=20, help='The number of training epochs (default value: 20)')
+    parser.add_argument('--batch_size', type=int, default=50, help='The size of a single mini-batch (default value: 50)')
+    parser.add_argument('--n_epochs', type=int, default=30, help='The number of training epochs (default value: 30)')
     args = parser.parse_args()
     return args
 
