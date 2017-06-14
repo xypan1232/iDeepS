@@ -14,8 +14,8 @@ We comprehensively evaluate iDeepS on verified RBP binding sites derived from la
 
 # Content <br>
 ./datasets: the training and testing dataset with sequence and label indicating it is binding sites or not<br>
-./motif/seq_cnn: detected binding sequence motifs from iDeepS, and we also report the matched known motifs uusing TOMTOM and motif enrichment analysis using AMD in MEME Suite. <br>
-./motif/structure_cnn: detected binding structure motifs from iDeepS. It also reports the motif enrichment analysis using AMD in MEME Suite<br>
+./motif/seq_cnn: detected binding sequence motifs from iDeepS, and we also report the matched known motifs uusing TOMTOM and motif enrichment analysis using AME in MEME Suite. <br>
+./motif/structure_cnn: detected binding structure motifs from iDeepS. It also reports the motif enrichment analysis using AME in MEME Suite<br>
 ./ideeps.py: the python code, it can be ran to reproduce our results. <br>
 
 
