@@ -525,11 +525,6 @@ def get_structure_motif_fig(filter_weights, filter_outs, out_dir, protein, seq_t
     num_filters = filter_weights.shape[0]
     filter_size = 7 #filter_weights.shape[2]
 
-    
-    #################################################################
-    # individual filter plots
-    #################################################################
-    # also save information contents
     filters_ic = []
     meme_out = structure_motifs.meme_intro('%s/filters_meme.txt'%out_dir, seqs)
 
@@ -569,7 +564,7 @@ def get_motif_fig(filter_weights, filter_outs, out_dir, protein, sample_i = 0):
                 seqs.append(val)
             
         
-        seq_targets = seq_targets[sample_i]
+        #seq_targets = seq_targets[sample_i]
         filter_outs = filter_outs[sample_i]
     
     num_filters = filter_weights.shape[0]
@@ -1120,6 +1115,202 @@ def test_ideeps(data_file, model_dir, outfile='prediction.txt', onlytest = True)
     #fw.write(mylabel + '\n')
     fw.write(myprob)
     fw.close()
+
+def get_structure_motif_fig_new(filter_weights, filter_outs, out_dir, structure, seq_targets = [], sample_i = 0):
+    print 'plot motif fig', out_dir
+    #seqs, seq_targets = get_seq_targets(protein)
+    seqs = structure
+    if sample_i:
+        print 'sampling'
+        seqs = []
+        for ind, val in enumerate(seqs):
+            if ind in sample_i:
+                seqs.append(val)
+            
+        
+        #seq_targets = seq_targets[sample_i]
+        filter_outs = filter_outs[sample_i]
+    
+    num_filters = filter_weights.shape[0]
+    filter_size = 7 #filter_weights.shape[2]
+
+    filters_ic = []
+    meme_out = structure_motifs.meme_intro('%s/filters_meme.txt'%out_dir, seqs)
+
+    for f in range(num_filters):
+        print 'Filter %d' % f
+
+        # plot filter parameters as a heatmap
+        structure_motifs.plot_filter_heat(filter_weights[f,:,:], '%s/filter%d_heat.pdf' % (out_dir,f))
+
+        # write possum motif file
+        structure_motifs.filter_possum(filter_weights[f,:,:], 'filter%d'%f, '%s/filter%d_possum.txt'%(out_dir,f), False)
+        
+        structure_motifs.plot_filter_logo(filter_outs[:,:, f], filter_size, seqs, '%s/filter%d_logo'%(out_dir,f), maxpct_t=0.5)
+        
+        filter_pwm, nsites = structure_motifs.make_filter_pwm('%s/filter%d_logo.fa'%(out_dir,f))
+        if nsites < 10:
+            # no information
+            filters_ic.append(0)
+        else:
+            # compute and save information content
+            filters_ic.append(info_content(filter_pwm))
+
+            # add to the meme motif file
+            structure_motifs.meme_add(meme_out, f, filter_pwm, nsites, False)
+
+    meme_out.close()
+    
+            
+def get_motif_fig_new(filter_weights, filter_outs, out_dir, seqs, sample_i = 0):
+    print 'plot motif fig', out_dir
+    #seqs, seq_targets = get_seq_targets(protein)
+    if sample_i:
+        print 'sampling'
+        seqs = []
+        for ind, val in enumerate(seqs):
+            if ind in sample_i:
+                seqs.append(val)
+            
+        
+        #seq_targets = seq_targets[sample_i]
+        filter_outs = filter_outs[sample_i]
+    
+    num_filters = filter_weights.shape[0]
+    filter_size = 7#filter_weights.shape[2]
+
+    #pdb.set_trace()
+    #################################################################
+    # individual filter plots
+    #################################################################
+    # also save information contents
+    filters_ic = []
+    meme_out = meme_intro('%s/filters_meme.txt'%out_dir, seqs)
+
+    for f in range(num_filters):
+        print 'Filter %d' % f
+
+        # plot filter parameters as a heatmap
+        plot_filter_heat(filter_weights[f,:,:], '%s/filter%d_heat.pdf' % (out_dir,f))
+
+        # write possum motif file
+        filter_possum(filter_weights[f,:,:], 'filter%d'%f, '%s/filter%d_possum.txt'%(out_dir,f), False)
+
+        # plot weblogo of high scoring outputs
+        plot_filter_logo(filter_outs[:,:, f], filter_size, seqs, '%s/filter%d_logo'%(out_dir,f), maxpct_t=0.5)
+
+        # make a PWM for the filter
+        filter_pwm, nsites = make_filter_pwm('%s/filter%d_logo.fa'%(out_dir,f))
+
+        if nsites < 10:
+            # no information
+            filters_ic.append(0)
+        else:
+            # compute and save information content
+            filters_ic.append(info_content(filter_pwm))
+
+            # add to the meme motif file
+            meme_add(meme_out, f, filter_pwm, nsites, False)
+
+    meme_out.close()
+
+
+    #################################################################
+    # annotate filters
+    #################################################################
+    # run tomtom #-evalue 0.01 
+    subprocess.call('tomtom -dist pearson -thresh 0.05 -eps -oc %s/tomtom %s/filters_meme.txt %s' % (out_dir, out_dir, 'Ray2013_rbp_RNA.meme'), shell=True)
+
+    # read in annotations
+    filter_names = name_filters(num_filters, '%s/tomtom/tomtom.txt'%out_dir, 'Ray2013_rbp_RNA.meme')
+
+
+    #################################################################
+    # print a table of information
+    #################################################################
+    table_out = open('%s/table.txt'%out_dir, 'w')
+
+    # print header for later panda reading
+    header_cols = ('', 'consensus', 'annotation', 'ic', 'mean', 'std')
+    print >> table_out, '%3s  %19s  %10s  %5s  %6s  %6s' % header_cols
+
+    for f in range(num_filters):
+        # collapse to a consensus motif
+        consensus = filter_motif(filter_weights[f,:,:])
+
+        # grab annotation
+        annotation = '.'
+        name_pieces = filter_names[f].split('_')
+        if len(name_pieces) > 1:
+            annotation = name_pieces[1]
+
+        # plot density of filter output scores
+        fmean, fstd = plot_score_density(np.ravel(filter_outs[:,:, f]), '%s/filter%d_dens.pdf' % (out_dir,f))
+
+        row_cols = (f, consensus, annotation, filters_ic[f], fmean, fstd)
+        print >> table_out, '%-3d  %19s  %10s  %5.2f  %6.4f  %6.4f' % row_cols
+
+    table_out.close()
+
+    if True:
+        new_outs = []
+        for val in filter_outs:
+            new_outs.append(val.T)
+        filter_outs = np.array(new_outs)
+        print filter_outs.shape
+        # plot filter-sequence heatmap
+        plot_filter_seq_heat(filter_outs, '%s/filter_seqs.pdf'%out_dir)
+        
+def read_seq_new(seq_file):
+    seq_list = []
+    seq = ''
+    with gzip.open(seq_file, 'r') as fp:
+        for line in fp:
+            if line[0] == '>':
+                name = line[1:-1]
+                if len(seq):
+                    #seq_array = get_RNA_seq_concolutional_array(seq)
+                    seq_list.append(seq)                    
+                seq = ''
+            else:
+                seq = seq + line[:-1]
+        if len(seq):
+            #seq_array = get_RNA_seq_concolutional_array(seq)
+            seq_list.append(seq) 
+    
+    return seq_list
+
+def get_seq_structure_motif(model, testing, seqs, index = 0, out_dir = 'motifs/seq_cnn/'):
+    sfilter = model.layers[0].layers[index].layers[0].get_weights()
+    filter_weights_old = np.transpose(sfilter[0][:,0,:,:], (2, 1, 0)) #sfilter[0][:,0,:,:]
+    print filter_weights_old.shape
+    #pdb.set_trace()
+    filter_weights = []
+    for x in filter_weights_old:
+        x = x - x.mean(axis = 0)
+        filter_weights.append(x)
+        
+    filter_weights = np.array(filter_weights)
+    #pdb.set_trace()
+    filter_outs = get_feature(model, testing, index)
+
+    sample_i =0
+
+    #out_dir = dir1 + protein
+    if not os.path.isdir(out_dir):
+        os.mkdir(out_dir)
+    if index == 0:    
+        get_motif_fig_new(filter_weights, filter_outs, out_dir, seqs, sample_i)
+    else:
+        get_structure_motif_fig_new(filter_weights, filter_outs, out_dir, seqs, sample_i)
+
+def identify_motif(data_file, model_dir = 'models/', motif_dir = 'motifs/', onlytest = True):
+    test_data = load_data_file(data_file, onlytest= onlytest)
+    seqs = read_seq_new(data_file)
+    model = load_model(os.path.join(model_dir,'model.pkl')) 
+    
+    get_seq_structure_motif(model, test_data["seq"], seqs, index = 0, dir1 = motif_dir + 'seq_cnn/')
+    get_seq_structure_motif(model, test_data["seq"],  test_data["structure"], index = 1, dir1 = motif_dir + 'structure_cnn/')
     
 def run_ideeps(parser):
     data_file = parser.data_file
@@ -1129,6 +1320,8 @@ def run_ideeps(parser):
     predict = parser.predict
     batch_size = parser.batch_size
     n_epochs = parser.n_epochs
+    motif = parser.motif
+    motif_dir = parser.motif_dir
     
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)
@@ -1143,6 +1336,9 @@ def run_ideeps(parser):
         print 'model prediction'
         test_ideeps(data_file, model_dir, outfile = out_file, onlytest = True)
         
+    if motif:
+        identify_motif(data_file, model_dir, motif_dir, onlytest = True)
+        
 
 def parse_arguments(parser):
     parser.add_argument('--data_file', type=str, metavar='<data_file>', help='the sequence file used for training, it contains sequences and label (0, 1) in each head of sequence.')
@@ -1150,6 +1346,8 @@ def parse_arguments(parser):
     parser.add_argument('--model_dir', type=str, default='models', help='The directory to save the trained models for future prediction')
     parser.add_argument('--predict', type=bool, default=False,  help='Predicting the RNA-protein binding sites for your input sequences, if using train, then it will be False')
     parser.add_argument('--out_file', type=str, default='prediction.txt', help='The output file used to store the prediction probability of testing data')
+    parser.add_argument('--motif', type=bool, default=True, help='Identify motifs using CNNs.')
+    parser.add_argument('--motif_dir', type=str, default='motifs', help='The directory to save the identified motifs.')
     parser.add_argument('--batch_size', type=int, default=50, help='The size of a single mini-batch (default value: 50)')
     parser.add_argument('--n_epochs', type=int, default=30, help='The number of training epochs (default value: 30)')
     args = parser.parse_args()
