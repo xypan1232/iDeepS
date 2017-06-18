@@ -44,7 +44,7 @@ python ideeps.py --train=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/
  python ideeps.py --motif=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/30000/test_sample_0/sequences.fa.gz --model_dir=models --motif_dir=YOUR_MOTIF_DIR
 <br> <br>
 --model_dir: The saved dir for models in training step, you must specify the trained model. <br>
---data_file: configure your <b>testing</b> sequence file sequences.fa.gz to identify binding sequence-structure motifs.
+--data_file: configure your sequence file sequences.fa.gz to identify binding sequence-structure motifs.
 
 <br><br> 
 
