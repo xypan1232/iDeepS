@@ -48,8 +48,8 @@ from sklearn.metrics import roc_curve, auc
 import theano
 import subprocess as sp
 import scipy.stats as stats
-#from seq_motifs import *
-#import structure_motifs
+from seq_motifs import *
+import structure_motifs
 from keras import backend as K
 from rnashape_structure import run_rnashape
 import argparse
