@@ -24,7 +24,7 @@ We comprehensively evaluate iDeepS on verified RBP binding sites derived from la
  python ideeps.py [-h] [--data_file <data_file>] [--train TRAIN] <br>
                 [--model_dir MODEL_DIR] [--predict PREDICT] <br>
                 [--out_file OUT_FILE] [--batch_size BATCH_SIZE] <nr>
-                [--n_epochs N_EPOCHS] <br> <br>
+                [--n_epochs N_EPOCHS]  [--motif MOTIF]   [--motif_dir MOTIF_DIR] <br> <br>
 where the input training file should be sequences.fa.gz with label info in each head per sequence.<br>
 
 # Use example
@@ -34,11 +34,17 @@ python ideeps.py --train=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/
 --model_dir: the dir used to save the trained model, which is used for prediction step. <br>
  --data_file: the <b>training</b> sequence file sequences.fa.gz with label informaiton in the head. <br>
 <br>
-<b>2.</b> predict the binding probability for your sequences (you need use the same dir for saved models in training step): <br>
+<b>2.</b> Predict the binding probability for your sequences (you need use the same dir for saved models in training step): <br>
  python ideeps.py --predict=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/30000/test_sample_0/sequences.fa.gz --model_dir=models --out_file=YOUR_OUTFILE
 <br> <br>
 --model_dir: The saved dir for models in training step. <br>
 --data_file: configure your <b>testing</b> sequence file sequences.fa.gz.
+
+<b>3.</b> Identify the binding sequence-structure motifs (you need use the same dir for saved models in training step): <br>
+ python ideeps.py --motif=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/30000/test_sample_0/sequences.fa.gz --model_dir=models --motif_dir=YOUR_MOTIF_DIR
+<br> <br>
+--model_dir: The saved dir for models in training step, you must specify the trained model. <br>
+--data_file: configure your <b>testing</b> sequence file sequences.fa.gz to identify binding sequence-structure motifs.
 
 <br><br> 
 
