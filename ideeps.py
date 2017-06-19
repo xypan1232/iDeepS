@@ -1341,7 +1341,7 @@ def run_ideeps(parser):
         
 
 def parse_arguments(parser):
-    parser.add_argument('--data_file', type=str, metavar='<data_file>', help='the sequence file used for training, it contains sequences and label (0, 1) in each head of sequence.')
+    parser.add_argument('--data_file', type=str, metavar='<data_file>', required=True, help='the sequence file used for training, it contains sequences and label (0, 1) in each head of sequence.')
     parser.add_argument('--train', type=bool, default=True, help='use this option for training model')
     parser.add_argument('--model_dir', type=str, default='models', help='The directory to save the trained models for future prediction')
     parser.add_argument('--predict', type=bool, default=False,  help='Predicting the RNA-protein binding sites for your input sequences, if using train, then it will be False')
