@@ -48,4 +48,6 @@ python ideeps.py --train=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/
 
 <br><br> 
 
+# Reference
+Xiaoyong Pan, Peter Rijnbeek, Junchi Yan, Hong-Bin Shen. <a href="http://biorxiv.org/content/early/2017/06/07/146175">Prediction of RNA-protein sequence and structure binding preferences using deep convolutional and recurrent neural networks</a>. biorxiv 146175, 2017. [<a href="https://github.com/xypan1232/iDeepS">Code</a>] <br>
 Contact: Xiaoyong Pan (xypan172436atgmail.com)
