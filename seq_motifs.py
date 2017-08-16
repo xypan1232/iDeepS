@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Some of the following fuctions are from https://github.com/davek44/Basset, and some are modified.
 from optparse import OptionParser
 import copy, os, pdb, random, shutil, subprocess, time
 
