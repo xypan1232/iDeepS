@@ -33,6 +33,11 @@ python ideeps.py --train=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/
 <br> <br>
 --model_dir: the dir used to save the trained model, which is used for prediction step. <br>
  --data_file: the <b>training</b> sequence file sequences.fa.gz with label informaiton in the head. <br>
+ <br>
+ When you run iDeepS, please make sure there are no empty structure.gz in corresponding dir. otherwise it will give the error: <br>
+  File "ideeps.py", line 163, in read_structure <br>
+    structure = struct_dict[old_name[:-1]] <br>
+KeyError: '> chr1,+,44951749,44951849; class:0' <br>
 <br>
 <b>2.</b> Predict the binding probability for your sequences (you need use the same dir for saved models in training step): <br>
  python ideeps.py --predict=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/30000/test_sample_0/sequences.fa.gz --model_dir=models --out_file=YOUR_OUTFILE
@@ -51,3 +56,6 @@ python ideeps.py --train=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/
 # Reference
 Xiaoyong Pan, Peter Rijnbeek, Junchi Yan, Hong-Bin Shen. <a href="http://biorxiv.org/content/early/2017/06/07/146175">Prediction of RNA-protein sequence and structure binding preferences using deep convolutional and recurrent neural networks</a>. biorxiv 146175, 2017. <br><br>
 Contact: Xiaoyong Pan (xypan172436atgmail.com)
+
+
+
