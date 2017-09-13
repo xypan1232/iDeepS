@@ -7,7 +7,7 @@ We comprehensively evaluate iDeepS on verified RBP binding sites derived from la
 
 
 # Dependency <br>
-<a href=https://github.com/fchollet/keras/>keras 1.1.2 library</a> <br>
+<a href=https://github.com/fchollet/keras/>keras 1.1.2 library</a> and its backend is theano 0.9.0 <br>
 <a href=https://github.com/scikit-learn/scikit-learn>sklearn</a> <br>
 <a href=https://github.com/fabriziocosta/EDeN>EDeN</a> <br>
 <a href=https://bibiserv.cebitec.uni-bielefeld.de/download/tools/rnashapes.html>RNAshapes</a> <br>
