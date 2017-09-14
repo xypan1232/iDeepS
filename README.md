@@ -34,7 +34,7 @@ python ideeps.py --train=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/
 --model_dir: the dir used to save the trained model, which is used for prediction step. <br>
  --data_file: the <b>training</b> sequence file sequences.fa.gz with label informaiton in the head. <br>
  <br>
- When you run iDeepS, please make sure there are no empty structure.gz in corresponding dir. otherwise it will give the error: <br>
+<b>NOTICE:</b> When you run iDeepS, please make sure there are no empty structure.gz in corresponding dir. otherwise it will give the error: <br>
   File "ideeps.py", line 163, in read_structure <br>
     structure = struct_dict[old_name[:-1]] <br>
 KeyError: '> chr1,+,44951749,44951849; class:0' <br>
