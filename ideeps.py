@@ -257,7 +257,7 @@ def load_data(path, seq = True, oli = False):
         seq_onehot, structure = read_structure(os.path.join(path, 'sequences.fa.gz'), path)
         tmp.append(seq_onehot)
         data["seq"] = tmp
-        data["structure"] = structure
+        #data["structure"] = structure
     
     if oli: data["oli"] = read_oli_feature(os.path.join(path, 'sequences.fa.gz'))
     
