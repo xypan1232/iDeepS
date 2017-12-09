@@ -298,17 +298,17 @@ def preprocess_labels(labels, encoder=None, categorical=True):
         y = np_utils.to_categorical(y)
     return y, encoder
 
-def get_RNA_seq_concolutional_array(seq, motif_len = 4):
+def get_RNA_seq_concolutional_array(seq, motif_len = 10):
     seq = seq.replace('U', 'T')
     alpha = 'ACGT'
     #for seq in seqs:
     #for key, seq in seqs.iteritems():
     row = (len(seq) + 2*motif_len - 2)
     new_array = np.zeros((row, 4))
-    for i in range(motif_len-1):
+    for i in range(motif_len/2):
         new_array[i] = np.array([0.25]*4)
     
-    for i in range(row-3, row):
+    for i in range(row-5, row):
         new_array[i] = np.array([0.25]*4)
         
     #pdb.set_trace()
@@ -328,7 +328,7 @@ def get_RNA_seq_concolutional_array(seq, motif_len = 4):
         #data[key] = new_array
     return new_array
 
-def get_RNA_structure_concolutional_array(seq, fw, structure = None, motif_len = 6):
+def get_RNA_structure_concolutional_array(seq, fw, structure = None, motif_len = 10):
     if fw is None:
         struc_en = structure
     else:
@@ -340,7 +340,7 @@ def get_RNA_structure_concolutional_array(seq, fw, structure = None, motif_len =
     alpha = 'FTIHMS'
     row = (len(struc_en) + 2*motif_len - 2)
     new_array = np.zeros((row, 6))
-    for i in range(motif_len-1):
+    for i in range(motif_len/2):
         new_array[i] = np.array([0.16]*6)
     
     for i in range(row-5, row):
@@ -415,7 +415,7 @@ def get_cnn_network():
     nbfilter = 16
     print 'configure cnn network'
 
-    seq_model = set_cnn_model(4, 107)
+    seq_model = set_cnn_model(4, 111)
     struct_model = set_cnn_model(6, 111)
     #pdb.set_trace()
     model = Sequential()
@@ -440,7 +440,7 @@ def get_cnn_network_old():
 
 
     model = Sequential()
-    model.add(Convolution1D(input_dim=4,input_length=107,
+    model.add(Convolution1D(input_dim=4,input_length=111,
                             nb_filter=nbfilter,
                             filter_length=10,
                             border_mode="valid",
@@ -469,7 +469,7 @@ def get_struct_network():
     nbfilter = 16
 
     model = Sequential()
-    model.add(Convolution1D(input_dim=6,input_length=107,
+    model.add(Convolution1D(input_dim=6,input_length=111,
                             nb_filter=nbfilter,
                             filter_length=10,
                             border_mode="valid",
