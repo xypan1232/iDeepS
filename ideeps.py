@@ -303,12 +303,13 @@ def get_RNA_seq_concolutional_array(seq, motif_len = 10):
     alpha = 'ACGT'
     #for seq in seqs:
     #for key, seq in seqs.iteritems():
-    row = (len(seq) + 2*motif_len - 2)
+    half_len = motif_len/2
+    row = (len(seq) + half_len *2 )
     new_array = np.zeros((row, 4))
-    for i in range(motif_len/2):
+    for i in range(half_len):
         new_array[i] = np.array([0.25]*4)
     
-    for i in range(row-5, row):
+    for i in range(row-half_len, row):
         new_array[i] = np.array([0.25]*4)
         
     #pdb.set_trace()
@@ -338,12 +339,13 @@ def get_RNA_structure_concolutional_array(seq, fw, structure = None, motif_len =
         fw.write(struc_en + '\n')
         
     alpha = 'FTIHMS'
-    row = (len(struc_en) + 2*motif_len - 2)
+    half_len = motif_len/2
+    row = (len(struc_en) +  half_len* 2)
     new_array = np.zeros((row, 6))
-    for i in range(motif_len/2):
+    for i in range(half_len):
         new_array[i] = np.array([0.16]*6)
     
-    for i in range(row-5, row):
+    for i in range(row-half_len, row):
         new_array[i] = np.array([0.16]*6)
 
     for i, val in enumerate(struc_en):
