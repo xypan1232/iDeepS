@@ -142,6 +142,13 @@ def read_rnashape(structure_file):
                 
     return struct_dict
 
+def run_rnastrcutre(seq):
+    #print 'running rnashapes'
+    seq = seq.replace('T', 'U')
+    struc_en = run_rnashape(seq)
+    #fw.write(struc_en + '\n')
+    return struc_en
+
 def read_structure(seq_file, path):
     seq_list = []
     structure_list = []
@@ -334,7 +341,7 @@ def get_RNA_structure_concolutional_array(seq, fw, structure = None, motif_len =
         struc_en = structure
     else:
         #print 'running rnashapes'
-        seq = seq.replace('U', 'T')
+        seq = seq.replace('T', 'U')
         struc_en = run_rnashape(seq)
         fw.write(struc_en + '\n')
         
