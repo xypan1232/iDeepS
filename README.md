@@ -54,7 +54,7 @@ KeyError: '> chr1,+,44951749,44951849; class:0' <br>
 <br><br> 
 
 # Reference
-Xiaoyong Pan, Peter Rijnbeek, Junchi Yan, Hong-Bin Shen. <a href="http://biorxiv.org/content/early/2017/06/07/146175">Prediction of RNA-protein sequence and structure binding preferences using deep convolutional and recurrent neural networks</a>. biorxiv 146175, 2017. <br><br>
+Xiaoyong Pan^, Peter Rijnbeek, Junchi Yan, Hong-Bin Shen^. <a href = "https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-018-4889-1">Prediction of RNA-protein sequence and structure binding preferences using deep convolutional and recurrent neural networks</a>. BMC Genomics, 2018, 19:511. <br><br>
 Contact: Xiaoyong Pan (xypan172436atgmail.com)
 
 
