@@ -1318,8 +1318,8 @@ def identify_motif(data_file, model_dir = 'models/', motif_dir = 'motifs/', only
     seqs = read_seq_new(data_file)
     model = load_model(os.path.join(model_dir,'model.pkl')) 
     
-    get_seq_structure_motif(model, test_data["seq"], seqs, index = 0, dir1 = motif_dir + 'seq_cnn/')
-    get_seq_structure_motif(model, test_data["seq"],  test_data["structure"], index = 1, dir1 = motif_dir + 'structure_cnn/')
+    get_seq_structure_motif(model, test_data["seq"], seqs, index = 0, out_dir = motif_dir + 'seq_cnn/')
+    get_seq_structure_motif(model, test_data["seq"],  test_data["structure"], index = 1, out_dir = motif_dir + 'structure_cnn/')
     
 def run_ideeps(parser):
     data_file = parser.data_file
@@ -1355,7 +1355,7 @@ def parse_arguments(parser):
     parser.add_argument('--model_dir', type=str, default='models', help='The directory to save the trained models for future prediction')
     parser.add_argument('--predict', type=bool, default=False,  help='Predicting the RNA-protein binding sites for your input sequences, if using train, then it will be False')
     parser.add_argument('--out_file', type=str, default='prediction.txt', help='The output file used to store the prediction probability of testing data')
-    parser.add_argument('--motif', type=bool, default=True, help='Identify motifs using CNNs.')
+    parser.add_argument('--motif', type=bool, default=False, help='Identify motifs using CNNs.')
     parser.add_argument('--motif_dir', type=str, default='motifs', help='The directory to save the identified motifs.')
     parser.add_argument('--batch_size', type=int, default=50, help='The size of a single mini-batch (default value: 50)')
     parser.add_argument('--n_epochs', type=int, default=30, help='The number of training epochs (default value: 30)')
