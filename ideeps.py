@@ -1123,7 +1123,7 @@ def test_ideeps(data_file, model_dir, outfile='prediction.txt', onlytest = True)
     pred = model.predict_proba(testing)
     
     fw = open(outfile, 'w')
-    myprob = "\n".join(map(str, predictions[:, 1]))
+    myprob = "\n".join(map(str, pred[:, 1]))
     #fw.write(mylabel + '\n')
     fw.write(myprob)
     fw.close()
