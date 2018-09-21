@@ -1041,6 +1041,8 @@ def load_data_file(inputfile, seq = True, onlytest = False):
         Load data matrices from the specified folder.
     """
     path = os.path.dirname(inputfile)
+    if len(path):
+        path = './'
     data = dict()
     if seq: 
         tmp = []
