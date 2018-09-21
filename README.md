@@ -45,7 +45,7 @@ KeyError: '> chr1,+,44951749,44951849; class:0' <br>
 --model_dir: The saved dir for models in training step. <br>
 --data_file: configure your <b>testing</b> sequence file sequences.fa.gz.
 
-# You need install WebLogo (http://weblogo.berkeley.edu/) and TOMTOM in MEME Suite(http://meme-suite.org/doc/download.html?man_type=web) to search identifyed motifs 
+Need install WebLogo (http://weblogo.berkeley.edu/) and TOMTOM in MEME Suite(http://meme-suite.org/doc/download.html?man_type=web) to search identifyed motifs <br>
 <b>3.</b> Identify the binding sequence-structure motifs (you need use the same dir for saved models in training step): <br>
  python ideeps.py --motif=True --data_file=datasets/clip/10_PARCLIP_ELAVL1A_hg19/30000/test_sample_0/sequences.fa.gz --model_dir=models --motif_dir=YOUR_MOTIF_DIR
 <br> <br>
