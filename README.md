@@ -54,6 +54,9 @@ Need install WebLogo (http://weblogo.berkeley.edu/) and TOMTOM in MEME Suite(htt
 
 <br><br> 
 
+# Update
+We also update iDeepS to iDeepS2, which can handle vairbale lengths and the sequences and structures are encoded into one-hot encoding vector. You can dowbload iDeepS2 from https://github.com/xypan1232/iDeepS2.
+
 # Reference
 Xiaoyong Pan^, Peter Rijnbeek, Junchi Yan, Hong-Bin Shen^. <a href = "https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-018-4889-1">Prediction of RNA-protein sequence and structure binding preferences using deep convolutional and recurrent neural networks</a>. BMC Genomics, 2018, 19:511. <br><br>
 Contact: Xiaoyong Pan (xypan172436atgmail.com)
