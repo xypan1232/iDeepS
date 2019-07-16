@@ -40,7 +40,7 @@ from sklearn.decomposition import PCA
 from sklearn import metrics
 from sklearn.metrics import roc_auc_score
 from sklearn.cross_validation import train_test_split
-from sklearn.grid_search import GridSearchCV
+#from sklearn.grid_search import GridSearchCV
 from scipy import sparse
 import pdb
 from math import  sqrt
