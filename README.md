@@ -7,6 +7,9 @@ We comprehensively evaluate iDeepS on verified RBP binding sites derived from la
 
 
 # Dependency <br>
+python 2.7 <br>
+NumPy v1.6.1 <br>
+Scipy v0.9 <br>
 <a href=https://github.com/fchollet/keras/>keras v1.1.2 library</a> and its backend is theano 0.9.0 <br>
 <a href=https://github.com/scikit-learn/scikit-learn>sklearn v0.17</a> <br>
 <a href=https://github.com/fabriziocosta/EDeN>EDeN</a> NOTE: use our uploaded EDeN.zip, decompress it and install it locally. The code structure of latest EDeN is completely changed and it does not work with our code.<br> 
