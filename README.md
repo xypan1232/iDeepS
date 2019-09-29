@@ -13,7 +13,7 @@ Scipy v0.9 <br>
 <a href=https://github.com/fchollet/keras/>keras v1.1.2 library</a> and its backend is theano 0.9.0 <br>
 <a href=https://github.com/scikit-learn/scikit-learn>sklearn v0.17</a> <br>
 <a href=https://github.com/fabriziocosta/EDeN>EDeN</a> NOTE: use our uploaded EDeN.zip, decompress it and install it locally. The code structure of latest EDeN is completely changed and it does not work with our code.<br> 
-<a href=https://bibiserv.cebitec.uni-bielefeld.de/download/tools/rnashapes.html>RNAshapes</a> <br>. If you cannot download it, please use our uploaded RNAshapes in this github repository.
+<a href=https://bibiserv.cebitec.uni-bielefeld.de/download/tools/rnashapes.html>RNAshapes</a> . If you cannot download it, please use our uploaded RNAshapes in this github repository. <br>
 
 # Content <br>
 ./datasets: the training and testing dataset with sequence and label indicating it is binding sites or not<br>
