@@ -55,7 +55,10 @@ Need install WebLogo (http://weblogo.berkeley.edu/) and TOMTOM in MEME Suite(htt
 --model_dir: The saved dir for models in training step, you must specify the trained model. <br>
 --data_file: configure your sequence file sequences.fa.gz to identify binding sequence-structure motifs.
 
-<br><br> 
+<br><br>
+
+# NOTE
+if there is memory issue for RNA strucutre prediciton, mayeb use rnashape_structure_without_memory_issue.py instead of rnashape_structure.py. We replace sp.checkout using os.open, which maybe slower, but will not cause memory issue.
 
 # Update
 We also update iDeepS to iDeepS2, which can handle vairbale lengths and the sequences and structures are encoded into one-hot encoding vector. You can dowbload iDeepS2 from https://github.com/xypan1232/iDeepS2.
