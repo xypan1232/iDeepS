@@ -1,53 +1,38 @@
-import sys
 import os
-import numpy
 import pdb
-from keras.models import Sequential, model_from_config
+from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation, Flatten, Merge
 #from keras.layers import Input, merge, LSTM
 from keras.layers.normalization import BatchNormalization
 from keras.layers.advanced_activations import PReLU
-from keras.utils import np_utils, generic_utils
-from keras.optimizers import SGD, RMSprop, Adadelta, Adagrad, Adam
-from keras.layers import normalization
+from keras.utils import np_utils
+from keras.optimizers import SGD
+
 from keras.layers.convolutional import Convolution2D, MaxPooling2D
 from keras.layers import LSTM, Bidirectional 
-from keras.layers.embeddings import Embedding
+
 from keras.layers.convolutional import Convolution2D, MaxPooling2D,Convolution1D, MaxPooling1D
-from keras import regularizers
-from keras.callbacks import ModelCheckpoint, EarlyStopping
-from keras.constraints import maxnorm
+from keras.callbacks import EarlyStopping
 from keras.models import load_model
 #from seya.layers.recurrent import Bidirectional
-from sklearn import svm, grid_search
+from sklearn import svm
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from sklearn.cross_validation import train_test_split
-from sklearn.calibration import CalibratedClassifierCV
-from sklearn.cross_validation import StratifiedKFold
-from sklearn.linear_model import LogisticRegression
+
 from sklearn.metrics import roc_curve, auc
-from sklearn.externals import joblib 
+
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 import random
 import gzip
 from sklearn import svm
-from sklearn.svm import LinearSVC
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.decomposition import PCA
-from sklearn import metrics
 from sklearn.metrics import roc_auc_score
-from sklearn.cross_validation import train_test_split
 #from sklearn.grid_search import GridSearchCV
 from scipy import sparse
 import pdb
 from math import  sqrt
 from sklearn.metrics import roc_curve, auc
-import theano
-import subprocess as sp
-import scipy.stats as stats
 from seq_motifs import *
 import structure_motifs
 from keras import backend as K
@@ -1370,4 +1355,3 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     args = parse_arguments(parser)
     run_ideeps(args)
-
