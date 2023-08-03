@@ -306,7 +306,7 @@ def get_RNA_seq_concolutional_array(seq, motif_len = 10):
         
     #pdb.set_trace()
     for i, val in enumerate(seq):
-        i = i + motif_len-1
+        i = i + half_len
         if val not in 'ACGT':
             new_array[i] = np.array([0.25]*4)
             continue
@@ -341,7 +341,7 @@ def get_RNA_structure_concolutional_array(seq, fw, structure = None, motif_len =
         new_array[i] = np.array([0.16]*6)
 
     for i, val in enumerate(struc_en):
-        i = i + motif_len-1
+        i = i + half_len
         if val not in alpha:
             new_array[i] = np.array([0.16]*6)
             continue
